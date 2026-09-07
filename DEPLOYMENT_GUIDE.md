@@ -65,17 +65,20 @@ git push -u origin main
 
 ---
 
-## ADIM 4: Build Komutu Yapılandırması
+## ADIM 4: Build Komutu & Framework Ayarları (ÇOK ÖNEMLİ)
 
 Cloudflare Pages proje ayarları ekranında derleme yapılandırmasını girin:
 
-- **Project name:** `ktp-yasin-hoca` (veya dilediğiniz subdomain adı, örn: `kutuphane-app`)
-- **Production branch:** `main`
-- **Framework preset:** `None` (veya `Next.js (Static HTML Export)`)
-- **Build command:**
-  ```bash
-  npm run build
-  ```
+> 🚨 **KRİTİK UYARI:**
+> Framework Preset alanında **ASLA "Next.js" seçmeyin!**
+> Cloudflare "Next.js" seçildiğinde arkada `npx opennextjs-cloudflare build` (OpenNext Workers SSR) çalıştırmaya çalışır ve proje statik export (`output: 'export'`) olduğu için derleme çöker (`error occurred while running deploy command`).
+>
+> **MUTLAKA Framework preset olarak `None` seçilmelidir!**
+
+- **Framework preset:** `None`
+- **Build command:** `npm run build`
+- **Build output directory:** `out`
+- **Root directory:** *(Boş bırakın veya `/` yapın)*
 
 ---
 
@@ -87,7 +90,20 @@ Cloudflare Pages proje ayarları ekranında derleme yapılandırmasını girin:
   ```
   *(Next.js `next.config.ts` dosyasında `output: 'export'` ayarlandığı için tüm statik HTML/JS/CSS dosyaları `out` klasörüne oluşturulur).*
 
-- **Root directory:** *(Eğer repoda ktp-app alt klasördeyse `ktp-app` yazın, reponun en üstündeyse boş bırakın).*
+- **Root directory:** *(Boş bırakın – çünkü GitHub reposu doğrudan proje dosyalarını içermektedir).*
+
+---
+
+### 🛠️ Mevcut Başarısız Projeyi Düzeltme Adımları (Eğer Daha Önce Hata Aldıysanız):
+1. Cloudflare Dashboard > **Workers & Pages** > Projenizi seçin.
+2. Üst menüden **Settings** > sol menüden **Builds & deployments** sekmesine gidin.
+3. **Build configurations** kartının sağındaki **Edit configurations** butonuna tıklayın.
+4. **Framework preset:** `None` olarak değiştirin.
+5. **Build command:** `npm run build` yazın.
+6. **Build output directory:** `out` yazın.
+7. **Root directory:** Boş bırakın.
+8. **Save** butonuna basın.
+9. Üstten **Deployments** sekmesine geçin, en son başarısız olan deployment'ın yanındaki **...** (üç nokta) simgesine basıp **Retry deployment** deyin.
 
 ---
 
