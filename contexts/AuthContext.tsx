@@ -59,20 +59,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    // İlk oturumu al
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!mounted) return;
-      if (session?.user) {
-        setUser(session.user);
-        loadProfile().finally(() => {
-          if (mounted) setLoading(false);
-        });
-      } else {
-        setUser(null);
-        setProfile(null);
+    // Güvenlik zaman aşımı: En geç 1.5 saniye sonra yükleme durumunu kapat (ekran donmasını önler)
+    const safetyTimer = setTimeout(() => {
+      if (mounted) {
         setLoading(false);
       }
-    });
+    }, 1500);
+
+    // İlk oturumu al
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        if (!mounted) return;
+        if (session?.user) {
+          setUser(session.user);
+          loadProfile().finally(() => {
+            if (mounted) setLoading(false);
+          });
+        } else {
+          setUser(null);
+          setProfile(null);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.warn('[AuthContext] getSession hatası:', err);
+        if (mounted) setLoading(false);
+      });
 
     // Oturum değişikliklerini dinle
     const {
@@ -91,6 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       mounted = false;
+      clearTimeout(safetyTimer);
       subscription.unsubscribe();
     };
   }, [loadProfile]);
@@ -99,26 +113,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (loading) return;
 
-    const isLoginRoute = pathname === '/login';
+    // URL'yi temizle: sondaki slash'ı kaldırıp standartlaştır (örn: '/login/' -> '/login')
+    const cleanPath = (pathname?.replace(/\/+$/, '') || '') || '/';
+    const isLoginRoute = cleanPath === '/login';
     const isProtectedRoute = PROTECTED_ROUTES.some(
-      (route) => pathname === route || (route !== '/' && pathname.startsWith(route)),
+      (route) => cleanPath === route || (route !== '/' && cleanPath.startsWith(route)),
     );
 
-    // 1. Giriş yapılmamışsa ve korunan sayfadaysa -> /login'e yönlendir
+    // 1. Giriş yapılmamışsa ve korunan sayfadaysa -> /login/ sayfasına yönlendir
     if (!user && isProtectedRoute && !isLoginRoute) {
-      router.replace('/login');
+      router.replace('/login/');
       return;
     }
 
-    // 2. Giriş yapılmışsa ve /login sayfasına gidilmeye çalışılıyorsa -> /'a yönlendir
+    // 2. Giriş yapılmışsa ve /login sayfasına gidilmeye çalışılıyorsa -> ana sayfaya yönlendir
     if (user && isLoginRoute) {
       router.replace('/');
       return;
     }
 
-    // 3. Staff kullanıcısı Admin-only sayfalara girmeye çalışırsa -> /'a yönlendir
+    // 3. Staff kullanıcısı Admin-only sayfalara girmeye çalışırsa -> ana sayfaya yönlendir
     if (user && profile && profile.role === 'staff') {
-      const isAdminRoute = ADMIN_ONLY_ROUTES.some((route) => pathname.startsWith(route));
+      const isAdminRoute = ADMIN_ONLY_ROUTES.some((route) => cleanPath.startsWith(route));
       if (isAdminRoute) {
         toast.error('Bu sayfaya erişim yetkiniz bulunmamaktadır (Sadece Yöneticiler erişebilir).');
         router.replace('/');
@@ -157,7 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setProfile(null);
       toast.info('Oturum kapatıldı.');
-      router.replace('/login');
+      router.replace('/login/');
     } catch (err: any) {
       console.error('[AuthContext] Çıkış hatası:', err);
     } finally {
