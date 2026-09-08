@@ -13,7 +13,7 @@ import {
   finishRental,
   updateRentalDetails,
 } from '@/lib/services/rentals';
-import { suspendDesk } from '@/lib/services/desks';
+import { suspendDesk, unsuspendDesk } from '@/lib/services/desks';
 import { checkExpiredRentals } from '@/lib/services/automation';
 import { calculateRemainingDays } from '@/lib/utils/rentalStatus';
 
@@ -141,6 +141,15 @@ export function useRentals() {
     [fetchRentals],
   );
 
+  // 2b. Masayı Askıdan Çıkar: desk.status = occupied
+  const handleUnsuspendDesk = useCallback(
+    async (deskId: string) => {
+      await unsuspendDesk(deskId);
+      await fetchRentals();
+    },
+    [fetchRentals],
+  );
+
   // 3. Kiralamayı ve Öğrenciyi Güncelle
   const handleUpdateRental = useCallback(
     async (
@@ -171,6 +180,7 @@ export function useRentals() {
     // İşlemler
     terminateRental,
     suspendDesk: handleSuspendDesk,
+    unsuspendDesk: handleUnsuspendDesk,
     updateRental: handleUpdateRental,
     refetch: fetchRentals,
   };

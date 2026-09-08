@@ -21,8 +21,10 @@ import { CreateRentalDialog } from '@/components/CreateRentalDialog';
 import { ExtendRentalDialog } from '@/components/ExtendRentalDialog';
 import { getRentalStatusDetails } from '@/lib/utils/rentalStatus';
 import { getTotalRentalRevenue } from '@/lib/services/extensions';
-import { formatDateLong, formatDate } from '@/lib/utils/format';
+import { formatDateLong, formatDate, formatPhone, cleanPhoneForTel } from '@/lib/utils/format';
 import { STATUS_BADGE, PAYMENT_BADGE, PACKAGE_LABEL } from '@/lib/utils/badges';
+import { unsuspendDesk } from '@/lib/services/desks';
+import { toast } from 'sonner';
 import type {
   DeskWithRental,
   RentalRevenueSummary,
@@ -41,6 +43,8 @@ import {
   ChevronRight,
   Clock,
   PlusCircle,
+  PlayCircle,
+  PauseCircle,
   Hourglass,
   Sparkles,
   TrendingUp,
@@ -102,10 +106,30 @@ export function DeskDetailsPanel({
   const [isExtendDialogOpen, setIsExtendDialogOpen] = useState(false);
   const [revenueSummary, setRevenueSummary] = useState<RentalRevenueSummary | null>(null);
   const [loadingRevenue, setLoadingRevenue] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
 
   const statusConfig = desk ? STATUS_BADGE[desk.status] : null;
   const rental = desk?.active_rental ?? null;
   const rentalStatus = rental ? getRentalStatusDetails(rental.end_date) : null;
+
+  const handleUnsuspendDesk = async () => {
+    if (!desk) return;
+    setActionLoading(true);
+    try {
+      await unsuspendDesk(desk.id);
+      toast.success('Masa tekrar aktif edildi', {
+        description: `Masa ${desk.code} durumu 'Dolu' olarak güncellendi.`,
+      });
+      if (onRentalCreated) {
+        await onRentalCreated();
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'İşlem başarısız';
+      toast.error('Hata oluştu', { description: msg });
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
 
   // ── Uzatma ve Toplam Gelir Verilerini Yükle ────────────────
@@ -175,6 +199,28 @@ export function DeskDetailsPanel({
               <div className="px-6 py-4 space-y-3">
                 {rental ? (
                   <>
+                    {/* Askıda Masayı Aktifleştirme Banner / Butonu */}
+                    {desk.status === 'suspended' && (
+                      <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <PauseCircle className="h-4 w-4 text-amber-600 shrink-0" />
+                          <div>
+                            <p className="text-xs font-bold text-amber-900">Masa Askıda</p>
+                            <p className="text-[11px] text-amber-700">Bu masa askıya alınmış durumda.</p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          disabled={actionLoading}
+                          onClick={handleUnsuspendDesk}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        >
+                          <PlayCircle className="h-3.5 w-3.5" />
+                          <span>{actionLoading ? 'İşleniyor…' : 'Askıdan Çıkar'}</span>
+                        </button>
+                      </div>
+                    )}
+
                     {/* KTP-005: Kalan Süre Özeti & Süre Uzat Butonu */}
                     <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-200/80 flex flex-col gap-3">
                       <div className="flex items-center justify-between">
@@ -297,12 +343,16 @@ export function DeskDetailsPanel({
                         icon={Phone}
                         label="Öğrenci Telefonu"
                         value={
-                          <a
-                            href={`tel:${rental.student.phone.replace(/\s/g, '')}`}
-                            className="text-blue-600 hover:underline"
-                          >
-                            {rental.student.phone}
-                          </a>
+                          rental.student.phone ? (
+                            <a
+                              href={`tel:${cleanPhoneForTel(rental.student.phone)}`}
+                              className="text-blue-600 hover:underline"
+                            >
+                              {formatPhone(rental.student.phone)}
+                            </a>
+                          ) : (
+                            '—'
+                          )
                         }
                       />
                       <InfoRow
@@ -332,10 +382,10 @@ export function DeskDetailsPanel({
                         value={
                           rental.student.parent_phone ? (
                             <a
-                              href={`tel:${rental.student.parent_phone.replace(/\s/g, '')}`}
+                              href={`tel:${cleanPhoneForTel(rental.student.parent_phone)}`}
                               className="text-blue-600 hover:underline"
                             >
-                              {rental.student.parent_phone}
+                              {formatPhone(rental.student.parent_phone)}
                             </a>
                           ) : (
                             '—'

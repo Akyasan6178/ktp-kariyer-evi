@@ -189,4 +189,11 @@ export async function suspendDesk(id: string): Promise<void> {
   await updateDeskStatus(id, 'suspended');
 }
 
+/**
+ * Masayı askıdan çıkarır (varsayılan olarak status = 'occupied').
+ */
+export async function unsuspendDesk(id: string, newStatus: DeskStatus = 'occupied'): Promise<void> {
+  await updateDeskStatus(id, newStatus);
+}
+
 

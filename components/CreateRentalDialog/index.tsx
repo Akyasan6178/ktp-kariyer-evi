@@ -283,7 +283,7 @@ export function CreateRentalDialog({
                 </label>
                 <input
                   type="tel"
-                  placeholder="Örn: 0532 123 4567"
+                  placeholder="Örn: 0507 036 78 61"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   disabled={loading}
@@ -351,7 +351,7 @@ export function CreateRentalDialog({
                 <label className="text-xs font-medium text-slate-600">Veli Telefonu</label>
                 <input
                   type="tel"
-                  placeholder="Örn: 0533 987 6543"
+                  placeholder="Örn: 0507 036 78 61"
                   value={form.parentPhone}
                   onChange={(e) => setForm({ ...form, parentPhone: e.target.value })}
                   disabled={loading}

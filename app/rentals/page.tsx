@@ -9,7 +9,7 @@ import type { RentalDetailed, PackageType, PaymentStatus, RentalRevenueSummary }
 import { ExtendRentalDialog } from '@/components/ExtendRentalDialog';
 import { getRentalStatusDetails } from '@/lib/utils/rentalStatus';
 import { getTotalRentalRevenue } from '@/lib/services/extensions';
-import { formatDate } from '@/lib/utils/format';
+import { formatDate, formatPhone, cleanPhoneForTel } from '@/lib/utils/format';
 import { PAYMENT_BADGE, PACKAGE_LABEL } from '@/lib/utils/badges';
 import {
   Dialog,
@@ -27,6 +27,7 @@ import {
   Edit2,
   CheckCircle2,
   PauseCircle,
+  PlayCircle,
   Clock,
   User,
   Phone,
@@ -57,6 +58,7 @@ export default function RentalsPage() {
     setPaymentFilter,
     terminateRental,
     suspendDesk,
+    unsuspendDesk,
     updateRental,
     refetch,
   } = useRentals();
@@ -67,6 +69,7 @@ export default function RentalsPage() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [terminateModalOpen, setTerminateModalOpen] = useState(false);
   const [suspendModalOpen, setSuspendModalOpen] = useState(false);
+  const [unsuspendModalOpen, setUnsuspendModalOpen] = useState(false);
   const [extendModalOpen, setExtendModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -138,6 +141,11 @@ export default function RentalsPage() {
     setSuspendModalOpen(true);
   };
 
+  const openUnsuspend = (rental: RentalDetailed) => {
+    setSelectedRental(rental);
+    setUnsuspendModalOpen(true);
+  };
+
   // ── İşlem Fonksiyonları ────────────────────────────────────
 
   // Kiralamayı Sonlandır (rentals.is_active = false, desk.status = available)
@@ -169,6 +177,25 @@ export default function RentalsPage() {
         description: `Masa ${selectedRental.desk?.code} durumu 'Askıda' olarak güncellendi.`,
       });
       setSuspendModalOpen(false);
+      setSelectedRental(null);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'İşlem başarısız';
+      toast.error('Hata oluştu', { description: msg });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  // Masayı Askıdan Çıkar (desk.status = occupied)
+  const handleConfirmUnsuspend = async () => {
+    if (!selectedRental) return;
+    setActionLoading(true);
+    try {
+      await unsuspendDesk(selectedRental.desk_id);
+      toast.success('Masa tekrar aktif edildi', {
+        description: `Masa ${selectedRental.desk?.code} durumu 'Dolu' (aktif) olarak güncellendi.`,
+      });
+      setUnsuspendModalOpen(false);
       setSelectedRental(null);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'İşlem başarısız';
@@ -459,6 +486,11 @@ export default function RentalsPage() {
                             <span className="text-[10px] font-bold text-slate-400 uppercase">
                               {rental.desk?.section}
                             </span>
+                            {rental.desk?.status === 'suspended' && (
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                                Askıda
+                              </span>
+                            )}
                           </div>
                         </td>
 
@@ -485,11 +517,11 @@ export default function RentalsPage() {
                         <td className="py-3 px-4 whitespace-nowrap font-medium text-slate-600">
                           {rental.student?.phone ? (
                             <a
-                              href={`tel:${rental.student.phone}`}
-                              className="hover:text-slate-900 flex items-center gap-1.5"
+                              href={`tel:${cleanPhoneForTel(rental.student.phone)}`}
+                              className="hover:text-blue-600 hover:underline flex items-center gap-1.5 transition-colors"
                             >
                               <Phone className="h-3 w-3 text-slate-400" />
-                              <span>{rental.student.phone}</span>
+                              <span>{formatPhone(rental.student.phone)}</span>
                             </a>
                           ) : (
                             '—'
@@ -581,14 +613,24 @@ export default function RentalsPage() {
                               <Clock className="h-3.5 w-3.5" />
                             </button>
 
-                            {/* Masayı Askıya Al */}
-                            <button
-                              onClick={() => openSuspend(rental)}
-                              title="Masayı Askıya Al"
-                              className="p-1.5 rounded-lg border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 transition-all shadow-xs cursor-pointer"
-                            >
-                              <PauseCircle className="h-3.5 w-3.5" />
-                            </button>
+                            {/* Masayı Askıya Al / Askıdan Çıkar */}
+                            {rental.desk?.status === 'suspended' ? (
+                              <button
+                                onClick={() => openUnsuspend(rental)}
+                                title="Askıdan Çıkar (Aktif Yap)"
+                                className="p-1.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-all shadow-xs cursor-pointer"
+                              >
+                                <PlayCircle className="h-3.5 w-3.5" />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => openSuspend(rental)}
+                                title="Masayı Askıya Al"
+                                className="p-1.5 rounded-lg border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 transition-all shadow-xs cursor-pointer"
+                              >
+                                <PauseCircle className="h-3.5 w-3.5" />
+                              </button>
+                            )}
 
                             {/* Kiralamayı Sonlandır */}
                             <button
@@ -670,9 +712,17 @@ export default function RentalsPage() {
                 </div>
                 <div>
                   <p className="text-slate-400 text-[10px]">Öğrenci Telefon</p>
-                  <p className="font-bold text-slate-800 mt-0.5">
-                    {selectedRental?.student?.phone || '—'}
-                  </p>
+                  {selectedRental?.student?.phone ? (
+                    <a
+                      href={`tel:${cleanPhoneForTel(selectedRental.student.phone)}`}
+                      className="font-bold text-blue-600 hover:underline flex items-center gap-1 mt-0.5"
+                    >
+                      <Phone className="h-3 w-3" />
+                      {formatPhone(selectedRental.student.phone)}
+                    </a>
+                  ) : (
+                    <p className="font-bold text-slate-800 mt-0.5">—</p>
+                  )}
                 </div>
                 <div>
                   <p className="text-slate-400 text-[10px]">Veli Ad Soyad</p>
@@ -682,9 +732,17 @@ export default function RentalsPage() {
                 </div>
                 <div>
                   <p className="text-slate-400 text-[10px]">Veli Telefon</p>
-                  <p className="font-bold text-slate-800 mt-0.5">
-                    {selectedRental?.student?.parent_phone || '—'}
-                  </p>
+                  {selectedRental?.student?.parent_phone ? (
+                    <a
+                      href={`tel:${cleanPhoneForTel(selectedRental.student.parent_phone)}`}
+                      className="font-bold text-blue-600 hover:underline flex items-center gap-1 mt-0.5"
+                    >
+                      <Phone className="h-3 w-3" />
+                      {formatPhone(selectedRental.student.parent_phone)}
+                    </a>
+                  ) : (
+                    <p className="font-bold text-slate-800 mt-0.5">—</p>
+                  )}
                 </div>
                 <div>
                   <p className="text-slate-400 text-[10px]">Öğrenci Notu</p>
@@ -1108,6 +1166,55 @@ export default function RentalsPage() {
               className="bg-amber-600 text-white hover:bg-amber-700"
             >
               {actionLoading ? 'İşleniyor…' : 'Evet, Askıya Al'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ══════════════════════════════════════════════════════════
+          4b. MASAYI ASKIDAN ÇIKAR ONAY MODALI
+          Şartname: desk.status = occupied
+      ══════════════════════════════════════════════════════════ */}
+      <Dialog
+        open={unsuspendModalOpen}
+        onOpenChange={(open) => !open && !actionLoading && setUnsuspendModalOpen(false)}
+      >
+        <DialogContent className="sm:max-w-md p-6 border-slate-200 shadow-2xl rounded-2xl">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
+              <PlayCircle className="h-5 w-5" />
+            </div>
+            <div>
+              <DialogTitle className="text-base font-bold text-slate-900">
+                Masayı Askıdan Çıkar
+              </DialogTitle>
+              <DialogDescription className="text-xs text-slate-500 mt-1">
+                <strong>Masa {selectedRental?.desk?.code}</strong> için{' '}
+                <strong>{selectedRental?.student?.full_name}</strong> adlı öğrencinin masasını askıdan çıkarıp tekrar aktif etmek istediğinizden emin misiniz?
+              </DialogDescription>
+              <div className="mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-800 space-y-1">
+                <p>• Masa durumu <strong>Dolu (occupied)</strong> olarak güncellenecek.</p>
+                <p>• Kat planında tekrar aktif kiralama olarak görünecektir.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-center justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setUnsuspendModalOpen(false)}
+              disabled={actionLoading}
+            >
+              Vazgeç
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleConfirmUnsuspend}
+              disabled={actionLoading}
+              className="bg-emerald-600 text-white hover:bg-emerald-700"
+            >
+              {actionLoading ? 'İşleniyor…' : 'Evet, Askıdan Çıkar'}
             </Button>
           </div>
         </DialogContent>

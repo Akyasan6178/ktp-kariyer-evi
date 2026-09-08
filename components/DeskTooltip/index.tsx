@@ -110,7 +110,6 @@ export function DeskTooltip({ desk, children }: DeskTooltipProps) {
               <BookOpen className="h-5 w-5 text-emerald-600" />
             </div>
             <p className="text-sm font-medium text-slate-700">Bu masa müsait</p>
-            <p className="text-xs text-slate-400 mt-0.5">Detay için tıklayın</p>
           </div>
         )}
 

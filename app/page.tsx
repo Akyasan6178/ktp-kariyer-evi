@@ -46,22 +46,6 @@ export default function HomePage() {
                 : `${desks.length} masanın gerçek zamanlı doluluk durumu`}
             </p>
           </div>
-
-          {/* Hızlı filtre butonları (UI only) */}
-          <div className="hidden sm:flex items-center gap-2">
-            {(['Tümü', 'Boş', 'Dolu', 'Askıda'] as const).map((filter, i) => (
-              <button
-                key={filter}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                  i === 0
-                    ? 'bg-slate-900 text-white border-slate-900'
-                    : 'border-slate-200 text-slate-600 bg-white hover:bg-slate-50'
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* İstatistik Kartları */}
@@ -95,7 +79,7 @@ export default function HomePage() {
 
         {/* Alt bilgi */}
         <div className="pb-6 flex items-center justify-between text-[11px] text-slate-400">
-          <span>© 2025 Kütüphane Yönetim Sistemi · Yasin Hoca</span>
+          <span>© 2026 Kütüphane Yönetim Sistemi</span>
           <span>v2.0.0 · Supabase</span>
         </div>
       </main>
