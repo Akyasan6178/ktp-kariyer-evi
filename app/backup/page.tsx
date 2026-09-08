@@ -51,7 +51,7 @@ export default function BackupPage() {
     profile?.full_name ||
     profile?.email?.split('@')[0] ||
     user?.email?.split('@')[0] ||
-    'Yasin Hoca (Admin)';
+    'Kariyer Evi (Admin)';
 
   // Veritabanı ve Logları Yükle
   const loadData = useCallback(async (showToast = false) => {
@@ -77,54 +77,70 @@ export default function BackupPage() {
     loadData();
   }, [loadData]);
 
-  // Dışa Aktarma İşleyicisi
+  // Manuel Dışa Aktar (Format Bazlı)
   const handleExport = async (type: BackupFileType) => {
+    if (!backupPayload) return;
+
     setIsExporting(type);
     try {
-      const payload = await fetchAllBackupData(adminName);
-      setBackupPayload(payload);
-
-      let downloadResult: { blob: Blob; filename: string; sizeStr: string };
+      let filename = '';
+      let recordCount = backupPayload.counts.total;
+      let sizeStr = '0 KB';
 
       if (type === 'json') {
-        downloadResult = generateJSONBackup(payload);
+        const res = generateJSONBackup(backupPayload);
+        filename = res.filename;
+        sizeStr = res.sizeStr;
+        triggerDownload(res.blob, filename);
+      } else if (type === 'csv') {
+        const res = generateCSVBackup(backupPayload);
+        filename = res.filename;
+        sizeStr = res.sizeStr;
+        triggerDownload(res.blob, filename);
       } else if (type === 'excel') {
-        downloadResult = generateExcelBackup(payload);
-      } else {
-        downloadResult = generateCSVBackup(payload);
+        const res = generateExcelBackup(backupPayload);
+        filename = res.filename;
+        sizeStr = res.sizeStr;
+        triggerDownload(res.blob, filename);
       }
 
-      // Dosyayı indir
-      triggerDownload(downloadResult.blob, downloadResult.filename);
-
-      // Log kaydet
+      // Veritabanına Log Kaydı Düş
       const savedLog = await logBackup({
         file_type: type,
-        file_size: downloadResult.sizeStr,
-        created_by: adminName,
+        file_size: sizeStr,
+        record_count: recordCount,
         status: 'success',
-        record_count: payload.counts.total,
+        created_by: adminName,
       });
 
       setLogs((prev) => [savedLog, ...prev]);
-      toast.success(
-        `${type.toUpperCase()} formatında tam yedek başarıyla indirildi (${downloadResult.sizeStr})`,
-      );
+
+      toast.success(`${type.toUpperCase()} yedeği indirildi`, {
+        description: `${filename} (${sizeStr}) başarıyla kaydedildi.`,
+      });
     } catch (err: any) {
-      console.error('Yedek alma hatası:', err);
-      toast.error('Yedek alınırken hata oluştu: ' + (err?.message || 'Hata'));
+      console.error('[BackupPage] Yedekleme hatası:', err);
+      toast.error('Yedek alınamadı: ' + (err?.message || 'Bilinmeyen hata'));
+
+      await logBackup({
+        file_type: type,
+        file_size: '0 KB',
+        record_count: 0,
+        status: 'failed',
+        created_by: adminName,
+      });
     } finally {
       setIsExporting(null);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20">
+    <div className="min-h-screen bg-slate-50">
       <Navbar onRefresh={() => loadData(true)} />
 
       <main className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
         {/* ============================================================ */}
-        {/* 1. ÜST BAŞLIK & ANA AKSİYON                                  */}
+        {/* 1. ÜST HEADER & DURUM BİLGİSİ                                 */}
         {/* ============================================================ */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
@@ -136,9 +152,6 @@ export default function BackupPage() {
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
                   Otomatik Yedekleme Sistemi
                 </h1>
-                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 border border-emerald-200">
-                  KTP-011
-                </span>
               </div>
               <p className="text-xs text-slate-500 sm:text-sm mt-0.5">
                 Veri kaybını önlemek için tüm kritik tabloları (öğrenciler, kiralamalar, uzatmalar, masalar, ayarlar, profiller) tek tıkla yedekleyin.

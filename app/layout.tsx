@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Kütüphane Haritası | Masa Kiralama Yönetim Sistemi',
-  description: 'Dershane kütüphanesi masa doluluk durumunu gerçek zamanlı görüntüleyin ve yönetin.',
-  keywords: ['kütüphane', 'masa kiralama', 'dershane', 'yönetim sistemi'],
+  title: 'Kariyer Evi VIP Kütüphane | Masa Yönetim Sistemi',
+  description: 'Kariyer Evi VIP Kütüphane masa kiralama, doluluk takibi, Wi-Fi QR kod ve finans yönetim sistemi.',
+  keywords: ['kütüphane', 'kariyer evi', 'masa kiralama', 'vip kütüphane', 'yönetim sistemi'],
 };
 
 export default function RootLayout({

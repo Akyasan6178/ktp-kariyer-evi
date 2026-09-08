@@ -139,9 +139,6 @@ export default function QrManagementPage() {
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
                   Masa QR Kod Yönetim Sistemi
                 </h1>
-                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 border border-emerald-200">
-                  KTP-013
-                </span>
               </div>
               <p className="text-xs text-slate-500 sm:text-sm mt-0.5">
                 Kütüphanedeki 50 masa için doğrudan Wi-Fi bağlantısı sağlayan özel QR kodlar.

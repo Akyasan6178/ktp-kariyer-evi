@@ -189,7 +189,7 @@ export default function SettingsPage() {
                       required
                       value={form.library_name}
                       onChange={(e) => handleChange('library_name', e.target.value)}
-                      placeholder="Örn: Yasin Hoca Çalışma Merkezi"
+                      placeholder="Örn: Kariyer Evi VIP Kütüphane"
                       className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 text-sm font-medium text-slate-900 transition focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>

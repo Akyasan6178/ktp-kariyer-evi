@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import {
   LogIn,
@@ -10,6 +11,10 @@ import {
   Database,
   ShieldCheck,
   ChevronRight,
+  Mail,
+  HelpCircle,
+  ArrowRight,
+  Sparkles,
 } from 'lucide-react';
 
 interface GuideSection {
@@ -25,85 +30,85 @@ const GUIDE_SECTIONS: GuideSection[] = [
   {
     id: 1,
     icon: LogIn,
-    title: 'Sisteme Giriş',
-    iconColor: 'text-slate-600',
+    title: 'Sisteme Giriş & Yetkilendirme',
+    iconColor: 'text-slate-700',
     iconBg: 'bg-slate-100',
     lines: [
-      'Tarayıcınızda sistemin adresini açın ve size verilen e-posta ile şifreyi girin.',
-      'Yönetici (Admin) rolüyle giriş yaparsanız tüm menülere erişebilirsiniz.',
-      'Personel (Staff) rolüyle yalnızca Kat Planı ve Kiralama Yönetimi sayfalarını görebilirsiniz.',
+      'Tarayıcınız üzerinden panel adresini açın; kurumunuz tarafından tanımlanan kurumsal e-posta ve şifrenizle saniyeler içinde giriş yapın.',
+      'Yönetici (Admin) hesabı; kat planından finansal raporlara, Wi-Fi ayarlarından veri yedeklemeye kadar tüm sisteme tam kontrol yetkisiyle erişir.',
+      'Personel (Staff) hesabı; kütüphane içi günlük operasyonel akışı hızlandırmak adına kat planı, masa kiralama ve süre uzatma ekranlarına odaklanır.',
     ],
   },
   {
     id: 2,
     icon: BookOpen,
-    title: 'Masa Kiralama',
+    title: 'Masa Kiralama & Kayıt İşlemleri',
     iconColor: 'text-emerald-600',
     iconBg: 'bg-emerald-50',
     lines: [
-      'Ana sayfadaki kat planında yeşil (boş) bir masaya tıklayın; sağdan bir panel açılır.',
-      '"Kiralama Oluştur" butonuna basın, öğrenci bilgilerini ve paket seçimini doldurun.',
-      'Kaydet\'e tıklayınca masa anında dolu olarak işaretlenir ve öğrenci kaydedilir.',
+      'İnteraktif kat planında yeşil renkli boş masalardan birine tıkladığınızda, sağ tarafta detay paneli anında hazır hale gelir.',
+      '"Kiralama Oluştur" butonuyla öğrenci adı-soyadı, iletişim numarası, veli telefonu ve haftalık/aylık/yıllık paket seçimini doldurun.',
+      'Kaydet\'e bastığınız anda masa haritada anında doluya döner; öğrenci kaydı, doluluk oranları ve gelir tablosu eşzamanlı güncellenir.',
     ],
   },
   {
     id: 3,
     icon: Clock,
-    title: 'Süre Uzatma',
+    title: 'Süre Uzatma & Askıya Alma',
     iconColor: 'text-blue-600',
     iconBg: 'bg-blue-50',
     lines: [
-      'Masaya tıklayıp detay panelini açın veya Kiralama Yönetimi listesindeki saat ikonunu kullanın.',
-      '"Süre Uzat" butonuyla 1 Hafta, 1 Ay veya 1 Yıl seçeneğinden birini seçin ve alınan ücreti girin.',
-      'İlk kiralama fiyatı değişmez; uzatma ayrı bir finansal kayıt olarak tutulur.',
+      'Süresi yaklaşan masaya tıklayarak veya Kiralama Yönetimi listesindeki saat simgesine basarak süre uzatma penceresine ulaşabilirsiniz.',
+      '1 Hafta, 1 Ay veya 1 Yıl paketlerinden birini belirleyin ve tahsil edilen tutarı girin; bitiş tarihi otomatik ötelenir ve bağımsız bir finans kaydı açılır.',
+      'Geçici olarak ara veren öğrencilerin masasını "Askıya Al" ile dondurabilir; geri döndüklerinde "Askıdan Çıkar" ile saniyeler içinde tekrar aktifleştirebilirsiniz.',
     ],
   },
   {
     id: 4,
     icon: BarChart3,
-    title: 'Raporları Görüntüleme',
+    title: 'Gelir, Doluluk & Finansal Raporlar',
     iconColor: 'text-purple-600',
     iconBg: 'bg-purple-50',
     lines: [
-      'Üst menüden "Raporlar" sayfasına gidin (yalnızca yönetici erişebilir).',
-      'Gelir özetleri, doluluk oranları ve öğrenci dağılımlarını buradan takip edebilirsiniz.',
-      'Tarihe göre filtreleme yaparak belirli dönemlere ait verileri inceleyebilirsiniz.',
+      'Yalnızca yöneticilere açık olan Raporlar sayfasından anlık ciro, net tahsilat, bölge performansı ve paket dağılım metriklerini canlı takip edin.',
+      'Tarih ve salon filtreleriyle dönemsel analizler yapın; verilerinizi tek tıkla Excel (.xls) veya CSV formatında bilgisayarınıza aktarın.',
+      'Excel raporları; optimize edilmiş sütun genişlikleri ve metin koruma biçimi sayesinde "#####" gibi taşma hataları olmaksızın kusursuz arşivleme sunar.',
     ],
   },
   {
     id: 5,
     icon: QrCode,
-    title: 'QR Kodları Kullanma',
+    title: 'Akıllı Wi-Fi & Masa QR Kodları',
     iconColor: 'text-teal-600',
     iconBg: 'bg-teal-50',
     lines: [
-      '"QR Kodlar" sayfasından 50 masanın tümü için Wi-Fi QR kodları oluşturulur.',
-      'Kodları tek tek PNG olarak veya tümünü ZIP arşivi olarak indirebilirsiniz.',
-      'Öğrenciler masadaki QR kodu telefon kameralarıyla okutarak şifresiz internete bağlanır.',
+      'Kütüphanemizdeki 50 masanın tamamı için internete hızlı ve şifresiz bağlanmayı sağlayan dinamik Wi-Fi QR kodları otomatik üretilir.',
+      'İhtiyacınıza göre doğrudan "Sadece QR" veya kurum başlığı ve masa numarasını içeren şık "Etiketli QR" formatlarından birini seçerek indirebilirsiniz.',
+      'Masaları tek tek indirebileceğiniz gibi, tek bir tıkla 50 masanın tamamını yüksek çözünürlüklü organize bir ZIP arşivi olarak alabilirsiniz.',
     ],
   },
   {
     id: 6,
     icon: Database,
-    title: 'Yedek Alma',
-    iconColor: 'text-orange-600',
-    iconBg: 'bg-orange-50',
+    title: 'Güvenli Veri Yedekleme & Arşiv',
+    iconColor: 'text-amber-600',
+    iconBg: 'bg-amber-50',
     lines: [
-      '"Yedekleme" sayfasından tüm veritabanını JSON, Excel veya CSV formatında dışa aktarabilirsiniz.',
-      'JSON formatı sistem geri yüklemesi için, Excel formatı ofis kullanımı için önerilir.',
-      'Her yedek işlemi otomatik olarak loglanır; geçmiş yedekler listede görünür.',
+      'Yedekleme merkezinden tüm veritabanı kayıtlarını (öğrenciler, sözleşmeler, finans hareketleri, masalar ve ayarlar) tek dokunuşla indirin.',
+      'Sistem kurtarma ve taşıma senaryoları için JSON, ofis analizleri ve fiziki arşiv için ise Excel ve CSV seçeneklerinden yararlanın.',
+      'Alınan her yedekleme adımı zaman damgası ve yönetici bilgisiyle sistem günlüğüne kaydedilir; veri güvenliğiniz daima güvence altındadır.',
     ],
   },
   {
     id: 7,
     icon: ShieldCheck,
-    title: 'Yetki Rolleri',
-    iconColor: 'text-amber-600',
-    iconBg: 'bg-amber-50',
+    title: 'Kurumsal Ayarlar & Güvenlik Altyapısı',
+    iconColor: 'text-indigo-600',
+    iconBg: 'bg-indigo-50',
     lines: [
-      'Sistemde iki rol vardır: Yönetici (Admin) ve Personel (Staff).',
-      'Personel yalnızca kat planını görüntüleyebilir ve kiralama işlemi yapabilir.',
-      'Yönetici; raporlara, ayarlara, yedeklemeye ve QR yönetimine tam erişime sahiptir.',
+      'Ayarlar ekranından kütüphane unvanı, iletişim numaraları, paket fiyat tarifeleri ve Wi-Fi ağ bilgileri yönetici tarafından kolayca güncellenir.',
+      'Wi-Fi adı veya şifresi değiştirildiğinde QR kodlar sistemde anında güncellenir; herhangi bir karmaşık yapılandırmaya gerek kalmaz.',
+      'Tüm kullanıcı oturumları ve veri iletişimleri Supabase Auth 256-bit şifreleme ve rol bazlı erişim denetimi (RBAC) ile korunmaktadır.',
     ],
   },
 ];
@@ -117,14 +122,13 @@ export default function GuidePage() {
         {/* Başlık */}
         <div className="mb-10 text-center">
           <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-md mb-4">
-            <BookOpen className="h-7 w-7 text-blue-400" />
+            <BookOpen className="h-7 w-7 text-emerald-400" />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-            Nasıl Kullanılır?
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            Kullanım Rehberi & İpuçları
           </h1>
-          <p className="mt-2 text-sm text-slate-500 max-w-xl mx-auto">
-            Kütüphane yönetim sistemini hızlıca öğrenmek için aşağıdaki kısa rehberi okuyun.
-            Her bölüm birkaç cümleyle anlatılmıştır.
+          <p className="mt-3 text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
+            Kariyer Evi VIP Kütüphane yönetim sistemini hızlı, verimli ve profesyonel şekilde kullanabilmeniz için hazırlanan pratik adımlar ve ipuçları.
           </p>
         </div>
 
@@ -135,7 +139,7 @@ export default function GuidePage() {
             return (
               <div
                 key={section.id}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md"
+                className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:shadow-md hover:border-slate-300"
               >
                 <div className="flex items-start gap-4">
                   {/* İkon */}
@@ -155,7 +159,7 @@ export default function GuidePage() {
                         {section.title}
                       </h2>
                     </div>
-                    <ul className="space-y-2">
+                    <ul className="space-y-2.5">
                       {section.lines.map((line, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed">
                           <ChevronRight className="h-4 w-4 text-slate-300 shrink-0 mt-0.5" />
@@ -170,14 +174,33 @@ export default function GuidePage() {
           })}
         </div>
 
-        {/* Alt bilgi */}
-        <div className="mt-10 rounded-2xl border border-slate-200 bg-slate-900 p-6 text-center">
-          <p className="text-sm text-slate-400">
-            Sorularınız için sistem yöneticisine danışın.
-          </p>
-          <p className="mt-1 text-[11px] text-slate-600">
-            Kütüphane Yönetim Sistemi · Yasin Hoca Çalışma Merkezi
-          </p>
+        {/* İletişim ve Destek Kutusu */}
+        <div className="mt-12 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+          <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-8 text-center sm:px-10">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-emerald-400 backdrop-blur-sm mb-3">
+              <Mail className="h-6 w-6" />
+            </div>
+            <h3 className="text-lg font-bold text-white sm:text-xl">
+              Sorularınız ve Teknik Destek İçin
+            </h3>
+            <p className="mt-2 text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+              Sistem işleyişi, özel talepleriniz veya karşılaştığınız her türlü durum için doğrudan iletişime geçebilirsiniz.
+            </p>
+            <div className="mt-5 flex justify-center">
+              <a
+                href="mailto:akyasan.6178@gmail.com"
+                className="inline-flex items-center gap-2.5 rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-900 shadow-lg hover:bg-slate-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <Mail className="h-4 w-4 text-emerald-600" />
+                <span>akyasan.6178@gmail.com</span>
+              </a>
+            </div>
+          </div>
+          <div className="bg-slate-50 px-6 py-4 text-center border-t border-slate-100">
+            <p className="text-xs font-medium text-slate-500">
+              Kariyer Evi VIP Kütüphane &bull; Yönetim ve Otomasyon Sistemi
+            </p>
+          </div>
         </div>
       </main>
     </div>

@@ -204,7 +204,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           <div className="flex flex-col items-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-700 border-t-emerald-500" />
             <p className="text-xs font-semibold tracking-wider uppercase text-slate-400">
-              Yasin Hoca Çalışma Merkezi &bull; Oturum Doğrulanıyor...
+              Kariyer Evi VIP Kütüphane &bull; Oturum Doğrulanıyor...
             </p>
           </div>
         </div>

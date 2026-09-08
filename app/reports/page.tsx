@@ -355,7 +355,7 @@ export default function ReportsPage() {
                   Gelir ve Finans Yönetimi
                 </h1>
                 <p className="text-xs text-slate-500 sm:text-sm">
-                  Yasin Hoca Çalışma Merkezi &bull; Anlık ciro, tahsilat, bölge performansı ve finansal işlemler
+                  Kariyer Evi VIP Kütüphane &bull; Anlık ciro, tahsilat, bölge performansı ve finansal işlemler
                 </p>
               </div>
             </div>

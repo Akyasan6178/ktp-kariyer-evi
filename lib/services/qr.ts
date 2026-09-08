@@ -64,7 +64,7 @@ export async function generateDeskQR(
   deskCode: string,
   wifiName: string,
   wifiPassword = '',
-  libraryName = 'Yasin Hoca Çalışma Merkezi',
+  libraryName = 'Kariyer Evi VIP Kütüphane',
 ): Promise<DeskQRItem> {
   const wifiString = buildWifiString(wifiName, wifiPassword);
 
@@ -101,9 +101,9 @@ export async function generateAllDeskQRs(
   settings?: DbSettings,
 ): Promise<{ items: DeskQRItem[]; settings: DbSettings }> {
   const currentSettings = settings || (await getSettings());
-  const wifiName = currentSettings.wifi_name || 'YasinHoca_Calisma';
-  const wifiPass = currentSettings.wifi_password || 'yh2026calisma';
-  const libName = currentSettings.library_name || 'Yasin Hoca Çalışma Merkezi';
+  const wifiName = currentSettings.wifi_name || 'KariyerEvi_VIP';
+  const wifiPass = currentSettings.wifi_password || 'kariyerevi2026';
+  const libName = currentSettings.library_name || 'Kariyer Evi VIP Kütüphane';
 
   const promises = ALL_DESK_CODES.map((code) =>
     generateDeskQR(code, wifiName, wifiPass, libName),

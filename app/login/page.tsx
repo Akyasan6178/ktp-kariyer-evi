@@ -76,7 +76,7 @@ export default function LoginPage() {
             <BookOpen className="h-7 w-7 text-white" />
           </div>
           <h1 className="mt-5 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-            Yasin Hoca Çalışma Merkezi
+            Kariyer Evi VIP Kütüphane
           </h1>
           <p className="mt-1.5 text-xs text-slate-400 sm:text-sm">
             Kütüphane Yönetim ve Takip Sistemi &bull; Güvenli Giriş
@@ -111,7 +111,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@yasinhoca.com"
+                  placeholder="admin@kariyerevi.com"
                   className="h-11 w-full rounded-xl border border-slate-700 bg-slate-800/60 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 transition focus:border-emerald-500 focus:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 />
               </div>

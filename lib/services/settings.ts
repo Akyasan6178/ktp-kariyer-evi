@@ -12,11 +12,11 @@ const db = supabase as any;
 
 export const DEFAULT_SETTINGS: DbSettings = {
   id: '00000000-0000-0000-0000-000000000001',
-  library_name: 'Yasin Hoca Çalışma Merkezi',
-  phone: '0555 123 45 67',
+  library_name: 'Kariyer Evi VIP Kütüphane',
+  phone: '0507 036 78 61',
   address: 'Merkez Mah. Üniversite Cad. No: 12/A',
-  wifi_name: 'YasinHoca_Calisma',
-  wifi_password: 'yh2026calisma',
+  wifi_name: 'KariyerEvi_VIP',
+  wifi_password: 'kariyerevi2026',
   weekly_price: 750,
   monthly_price: 2500,
   yearly_price: 25000,

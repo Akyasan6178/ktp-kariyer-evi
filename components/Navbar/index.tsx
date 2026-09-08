@@ -117,7 +117,7 @@ export function Navbar({ onRefresh }: NavbarProps) {
                   Kütüphane Yönetimi
                 </h1>
                 <p className="text-[11px] text-slate-500 mt-0.5 leading-none">
-                  Yasin Hoca Çalışma Merkezi
+                  Kariyer Evi VIP Kütüphane
                 </p>
               </div>
             </Link>

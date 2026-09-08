@@ -25,7 +25,7 @@ export function formatBytes(bytes: number): string {
  * Tüm kritik veritabanı tablolarını Supabase'den eşzamanlı çeker:
  * students, rentals, rental_extensions, desks, settings, profiles
  */
-export async function fetchAllBackupData(createdBy = 'Yasin Hoca (Admin)'): Promise<FullBackupPayload> {
+export async function fetchAllBackupData(createdBy = 'Kariyer Evi (Admin)'): Promise<FullBackupPayload> {
   const timestamp = new Date().toISOString();
 
   // 1. students
@@ -132,9 +132,9 @@ export function generateJSONBackup(payload: FullBackupPayload) {
  */
 export function generateCSVBackup(payload: FullBackupPayload) {
   const dateStr = new Date().toISOString().split('T')[0];
-  const filename = `Yasin_Hoca_Kutuphane_Veri_Dokumu_${dateStr}.csv`;
+  const filename = `Kariyer_Evi_Kutuphane_Veri_Dokumu_${dateStr}.csv`;
 
-  let csvContent = `YASIN HOCA CALISMA MERKEZI - SISTEM VERI YEDEGI\r\n`;
+  let csvContent = `KARIYER EVI VIP KUTUPHANE - SISTEM VERI YEDEGI\r\n`;
   csvContent += `Tarih:;${new Date().toLocaleString('tr-TR')}\r\n`;
   csvContent += `Yedekleyen:;${payload.created_by}\r\n`;
   csvContent += `Toplam Kayit:;${payload.counts.total}\r\n\r\n`;
@@ -180,7 +180,7 @@ export function generateCSVBackup(payload: FullBackupPayload) {
  */
 export function generateExcelBackup(payload: FullBackupPayload) {
   const dateStr = new Date().toISOString().split('T')[0];
-  const filename = `Yasin_Hoca_Kutuphane_Yedek_${dateStr}.xls`;
+  const filename = `Kariyer_Evi_Kutuphane_Yedek_${dateStr}.xls`;
 
   const generateSheet = (name: string, data: any[]) => {
     let rowsHtml = '';
@@ -228,7 +228,7 @@ export function generateExcelBackup(payload: FullBackupPayload) {
       </head>
       <body style="font-family:Arial;padding:20px;">
         <div style="margin-bottom:20px;">
-          <h1 style="color:#047857;margin:0;">YASIN HOCA CALISMA MERKEZI</h1>
+          <h1 style="color:#047857;margin:0;">KARIYER EVI VIP KUTUPHANE</h1>
           <p style="color:#475569;margin:4px 0 0 0;font-size:13px;">Sistem Tam Veritabani Yedegi &bull; Tarih: ${new Date().toLocaleString('tr-TR')}</p>
         </div>
         ${generateSheet('Ogrenciler (students)', payload.tables.students)}
