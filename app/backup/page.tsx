@@ -16,12 +16,10 @@ import {
   triggerDownload,
   logBackup,
   getBackupLogs,
-  runDailyBackup,
 } from '@/lib/services/backup';
 import type { FullBackupPayload, DbBackupLog, BackupFileType } from '@/lib/types';
 import {
   Database,
-  HardDriveDownload,
   FileJson,
   FileSpreadsheet,
   FileText,
@@ -37,7 +35,6 @@ import {
   Loader2,
   Sparkles,
   Download,
-  FolderArchive,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -48,7 +45,7 @@ export default function BackupPage() {
   const [backupPayload, setBackupPayload] = useState<FullBackupPayload | null>(null);
   const [logs, setLogs] = useState<DbBackupLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isExporting, setIsExporting] = useState<BackupFileType | 'daily' | null>(null);
+  const [isExporting, setIsExporting] = useState<BackupFileType | null>(null);
 
   const adminName =
     profile?.full_name ||
@@ -121,26 +118,6 @@ export default function BackupPage() {
     }
   };
 
-  // Günlük Otomatik Yedeği Manuel Tetikleme
-  const handleTriggerDaily = async () => {
-    setIsExporting('daily');
-    try {
-      const { payload, jsonLog } = await runDailyBackup(adminName + ' (Manuel Günlük Tetikleme)');
-      setBackupPayload(payload);
-      setLogs((prev) => [jsonLog, ...prev]);
-
-      const { blob, filename } = generateJSONBackup(payload);
-      triggerDownload(blob, filename);
-
-      toast.success('Günlük sistem yedeği başarıyla arşivlendi ve indirildi!');
-    } catch (err: any) {
-      console.error('Günlük yedek hatası:', err);
-      toast.error('Günlük yedek alınamadı: ' + (err?.message || 'Hata'));
-    } finally {
-      setIsExporting(null);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
       <Navbar onRefresh={() => loadData(true)} />
@@ -176,24 +153,6 @@ export default function BackupPage() {
             >
               <RefreshCw className="h-3.5 w-3.5 text-slate-500" />
               <span>Yenile</span>
-            </button>
-
-            <button
-              onClick={() => handleExport('json')}
-              disabled={isExporting !== null}
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-4 py-2 text-xs font-bold text-white shadow-md transition hover:bg-emerald-800 disabled:opacity-50"
-            >
-              {isExporting === 'json' ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin text-white" />
-                  <span>Yedekleniyor...</span>
-                </>
-              ) : (
-                <>
-                  <HardDriveDownload className="h-4 w-4 text-emerald-200" />
-                  <span>Tam Yedek Al (JSON)</span>
-                </>
-              )}
             </button>
           </div>
         </div>
@@ -308,10 +267,10 @@ export default function BackupPage() {
               <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
                 <div>
                   <div className="flex items-center justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                      <FileJson className="h-6 w-6" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                      <FileJson className="h-5 w-5" />
                     </div>
-                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 border border-slate-200">
                       ÖNERİLEN
                     </span>
                   </div>
@@ -325,12 +284,12 @@ export default function BackupPage() {
                   <button
                     onClick={() => handleExport('json')}
                     disabled={isExporting !== null}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow transition hover:bg-slate-800 disabled:opacity-50"
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50"
                   >
                     {isExporting === 'json' ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white" />
                     ) : (
-                      <Download className="h-4 w-4 text-emerald-400" />
+                      <Download className="h-4 w-4 text-slate-300" />
                     )}
                     <span>JSON Olarak İndir</span>
                   </button>
@@ -341,10 +300,10 @@ export default function BackupPage() {
               <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
                 <div>
                   <div className="flex items-center justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                      <FileSpreadsheet className="h-6 w-6" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                      <FileSpreadsheet className="h-5 w-5" />
                     </div>
-                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-800">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 border border-slate-200">
                       OFİS UYUMLU
                     </span>
                   </div>
@@ -358,12 +317,12 @@ export default function BackupPage() {
                   <button
                     onClick={() => handleExport('excel')}
                     disabled={isExporting !== null}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 text-xs font-bold text-white shadow transition hover:bg-blue-700 disabled:opacity-50"
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50"
                   >
                     {isExporting === 'excel' ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white" />
                     ) : (
-                      <Download className="h-4 w-4 text-blue-200" />
+                      <Download className="h-4 w-4 text-slate-300" />
                     )}
                     <span>Excel Olarak İndir</span>
                   </button>
@@ -374,10 +333,10 @@ export default function BackupPage() {
               <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
                 <div>
                   <div className="flex items-center justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
-                      <FileText className="h-6 w-6" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                      <FileText className="h-5 w-5" />
                     </div>
-                    <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-bold text-purple-800">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 border border-slate-200">
                       EVRENSEL
                     </span>
                   </div>
@@ -391,54 +350,16 @@ export default function BackupPage() {
                   <button
                     onClick={() => handleExport('csv')}
                     disabled={isExporting !== null}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-800 px-4 text-xs font-bold text-white shadow transition hover:bg-slate-700 disabled:opacity-50"
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50"
                   >
                     {isExporting === 'csv' ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white" />
                     ) : (
-                      <Download className="h-4 w-4 text-purple-300" />
+                      <Download className="h-4 w-4 text-slate-300" />
                     )}
                     <span>CSV Olarak İndir</span>
                   </button>
                 </div>
-              </div>
-            </div>
-
-            {/* ============================================================ */}
-            {/* 4. OTOMATİK YEDEKLEME BİLGİ VE TETİKLEME KARTI               */}
-            {/* ============================================================ */}
-            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 to-slate-800 p-6 text-white shadow-lg">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <FolderArchive className="h-5 w-5 text-emerald-400" />
-                    <h3 className="text-base font-bold text-white">Günlük Otomatik Yedekleme Mimarisi</h3>
-                    <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/30">
-                      CRON HAZIR
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-                    Sistem servis katmanı (<code className="text-emerald-300 font-mono">runDailyBackup()</code>), günde bir kez arka planda çalışacak şekilde tasarlanmıştır. Gelecekte Supabase Edge Function veya Vercel Cron tetikleyicisi bağlandığında ek bir kod değişikliği gerekmeksizin otomatik arşivleme yapacaktır.
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleTriggerDaily}
-                  disabled={isExporting !== null}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-xs font-bold text-slate-950 shadow-md transition hover:bg-emerald-400 disabled:opacity-50 shrink-0"
-                >
-                  {isExporting === 'daily' ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Arşivleniyor...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="h-4 w-4" />
-                      <span>Şimdi Günlük Yedeği Tetikle</span>
-                    </>
-                  )}
-                </button>
               </div>
             </div>
 

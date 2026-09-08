@@ -10,6 +10,7 @@ import { Navbar } from '@/components/Navbar';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   generateAllDeskQRs,
+  generateLabeledQR,
   downloadQR,
   downloadAllQRs,
   type DeskQRItem,
@@ -28,6 +29,7 @@ import {
   Sparkles,
   Info,
   BookOpen,
+  Tag,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -39,6 +41,7 @@ export default function QrManagementPage() {
   const [settings, setSettings] = useState<DbSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [isZipping, setIsZipping] = useState(false);
+  const [downloadMode, setDownloadMode] = useState<'labeled' | 'qr-only'>('labeled');
 
   // Filtreler
   const [selectedSection, setSelectedSection] = useState<'all' | 'A' | 'B' | 'C'>('all');
@@ -82,14 +85,31 @@ export default function QrManagementPage() {
     if (!qrItems.length) return;
     setIsZipping(true);
     try {
-      toast.info('50 masanın QR kodu ZIP olarak paketleniyor...');
-      await downloadAllQRs(qrItems);
+      toast.info(`50 masanın ${downloadMode === 'labeled' ? 'etiketli QR kodları' : 'QR kodları'} ZIP olarak paketleniyor...`);
+      await downloadAllQRs(qrItems, downloadMode, 'Kariyer Evi VIP Kütüphane');
       toast.success('50 masa QR kodu tek ZIP dosyası olarak başarıyla indirildi!');
     } catch (err: any) {
       console.error('ZIP indirme hatası:', err);
       toast.error('ZIP oluşturulurken hata oluştu: ' + (err?.message || 'Hata'));
     } finally {
       setIsZipping(false);
+    }
+  };
+
+  // Tekli QR İndirme (Seçilen formata göre)
+  const handleDownloadSingle = async (item: DeskQRItem) => {
+    if (downloadMode === 'labeled') {
+      try {
+        const labeledUrl = await generateLabeledQR(item, 'Kariyer Evi VIP Kütüphane');
+        downloadQR(`Masa_${item.deskCode}_Etiket.png`, labeledUrl);
+        toast.success(`Masa ${item.deskCode} etiketli QR indirildi`);
+      } catch (err) {
+        console.error(err);
+        toast.error('Etiket görseli oluşturulamadı');
+      }
+    } else {
+      downloadQR(`Masa_${item.deskCode}_QR.png`, item.dataUrl);
+      toast.success(`Masa ${item.deskCode} QR kodu indirildi`);
     }
   };
 
@@ -130,6 +150,36 @@ export default function QrManagementPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
+            {/* Format Seçici: Etiketli QR vs Sadece QR */}
+            <div className="flex items-center p-1 bg-slate-200/70 rounded-xl text-xs font-bold">
+              <button
+                type="button"
+                onClick={() => setDownloadMode('labeled')}
+                className={cn(
+                  'px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5',
+                  downloadMode === 'labeled'
+                    ? 'bg-white text-emerald-700 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900',
+                )}
+              >
+                <Tag className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Etiketli QR</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDownloadMode('qr-only')}
+                className={cn(
+                  'px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5',
+                  downloadMode === 'qr-only'
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900',
+                )}
+              >
+                <QrCode className="h-3.5 w-3.5 text-slate-700" />
+                <span>Sadece QR</span>
+              </button>
+            </div>
+
             <button
               onClick={() => loadQRs(true)}
               disabled={loading}
@@ -162,7 +212,7 @@ export default function QrManagementPage() {
               ) : (
                 <>
                   <Archive className="h-4 w-4 text-emerald-200" />
-                  <span>Tüm QR Kodlarını İndir (ZIP)</span>
+                  <span>Tümünü İndir (ZIP)</span>
                 </>
               )}
             </button>
@@ -192,21 +242,8 @@ export default function QrManagementPage() {
                   <span className="rounded-md bg-slate-100 px-2.5 py-1 font-mono text-slate-600">
                     Şifre: {settings?.wifi_password ? '••••••••' : 'Tanımsız'}
                   </span>
-                  <span className="rounded-md bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700 border border-emerald-100">
-                    WPA / WPA2 Protokolü
-                  </span>
                 </div>
               </div>
-            </div>
-
-            <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-3 text-xs text-blue-900 max-w-sm">
-              <div className="flex items-center gap-1.5 font-bold mb-0.5">
-                <Sparkles className="h-3.5 w-3.5 text-blue-600" />
-                <span>Gelecek Sürüm Desteği Hazır</span>
-              </div>
-              <span>
-                Her QR kodun içerisine <code className="font-mono text-blue-700 font-bold">{'{ desk, type: "wifi" }'}</code> metadatası eklenmiştir.
-              </span>
             </div>
           </div>
         </div>
@@ -312,11 +349,11 @@ export default function QrManagementPage() {
                     </div>
 
                     <button
-                      onClick={() => downloadQR(item.deskCode, item.dataUrl)}
+                      onClick={() => handleDownloadSingle(item)}
                       className="flex h-8 w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800"
                     >
                       <Download className="h-3.5 w-3.5 text-slate-500" />
-                      <span>PNG İndir</span>
+                      <span>{downloadMode === 'labeled' ? 'Etiket İndir' : 'QR İndir'}</span>
                     </button>
                   </div>
                 </div>
@@ -330,7 +367,7 @@ export default function QrManagementPage() {
             <div className="hidden print:block space-y-4">
               <div className="text-center pb-4 border-b border-slate-300">
                 <h1 className="text-xl font-bold tracking-tight text-slate-900 uppercase">
-                  {settings?.library_name || 'YASİN HOCA ÇALIŞMA MERKEZİ'}
+                  Kariyer Evi VIP Kütüphane
                 </h1>
                 <p className="text-xs text-slate-600 mt-0.5">
                   Masa Wi-Fi Bağlantı QR Kodları &bull; Masalara Yapıştırmak İçin Kesim Çizgileriyle
@@ -348,7 +385,7 @@ export default function QrManagementPage() {
                     {/* Kurum Başlığı */}
                     <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-slate-600 mb-1">
                       <BookOpen className="h-3 w-3" />
-                      <span>Yasin Hoca Çalışma Merkezi</span>
+                      <span>Kariyer Evi VIP Kütüphane</span>
                     </div>
 
                     {/* Masa Numarası */}
