@@ -15,6 +15,8 @@ import {
 } from '@/lib/services/rentals';
 import { suspendDesk } from '@/lib/services/desks';
 import { checkExpiredRentals } from '@/lib/services/automation';
+import { calculateRemainingDays } from '@/lib/utils/rentalStatus';
+
 
 export type GroupFilter = 'all' | 'YKS' | 'LGS';
 export type PaymentFilter = 'all' | 'paid' | 'deposit' | 'pending';
@@ -96,21 +98,12 @@ export function useRentals() {
 
   // ── Sayaç İstatistikleri ────────────────────────────────────
   const stats = useMemo(() => {
-    const now = new Date();
     let expiringCount = 0;
     let expiredCount = 0;
-    let depositCount = 0;
-    let paidCount = 0;
-    let pendingCount = 0;
 
     rentals.forEach((r) => {
-      if (r.payment_status === 'deposit') depositCount++;
-      if (r.payment_status === 'paid') paidCount++;
-      if (r.payment_status === 'pending') pendingCount++;
-
       if (r.end_date) {
-        const endDate = new Date(r.end_date);
-        const diffDays = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        const diffDays = calculateRemainingDays(r.end_date);
         if (diffDays < 0) {
           expiredCount++;
         } else if (diffDays <= 7) {
@@ -124,11 +117,9 @@ export function useRentals() {
       active: rentals.length - expiredCount,
       expiringCount,
       expiredCount,
-      depositCount,
-      paidCount,
-      pendingCount,
     };
   }, [rentals]);
+
 
   // ── İşlemler (Actions) ─────────────────────────────────────
   

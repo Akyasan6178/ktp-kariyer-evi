@@ -4,7 +4,7 @@ import { StatisticsCards } from '@/components/StatisticsCards';
 import { LibraryMap } from '@/components/LibraryMap';
 import { DeskDetailsPanel } from '@/components/DeskDetailsPanel';
 import { useDesks } from '@/hooks/useDesk';
-import { BookOpen, Settings, Bell, RefreshCw, Calendar } from 'lucide-react';
+
 
 import { Navbar } from '@/components/Navbar';
 
@@ -21,12 +21,7 @@ export default function HomePage() {
     refetch,
   } = useDesks();
 
-  console.log('[HomePage] Render edildi:', {
-    toplamMasa: desks.length,
-    loading,
-    error,
-    stats,
-  });
+
 
   return (
     <div className="min-h-screen bg-slate-50">

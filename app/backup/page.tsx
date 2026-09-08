@@ -17,7 +17,6 @@ import {
   logBackup,
   getBackupLogs,
   runDailyBackup,
-  type formatBytes,
 } from '@/lib/services/backup';
 import type { FullBackupPayload, DbBackupLog, BackupFileType } from '@/lib/types';
 import {

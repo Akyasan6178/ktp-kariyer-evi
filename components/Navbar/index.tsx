@@ -15,9 +15,11 @@ import {
   LogOut,
   Crown,
   UserCheck,
+  BookOpenCheck,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+
 
 interface NavbarProps {
   onRefresh?: () => void;
@@ -25,7 +27,8 @@ interface NavbarProps {
 
 export function Navbar({ onRefresh }: NavbarProps) {
   const pathname = usePathname();
-  const { user, profile, role, isAdmin, signOut } = useAuth();
+  const { user, profile, isAdmin, signOut } = useAuth();
+
 
   const today = new Date().toLocaleDateString('tr-TR', {
     weekday: 'long',
@@ -80,7 +83,15 @@ export function Navbar({ onRefresh }: NavbarProps) {
       active: pathname.startsWith('/qr'),
       adminOnly: true,
     },
+    {
+      label: 'Nasıl Kullanılır',
+      href: '/guide',
+      icon: BookOpenCheck,
+      active: pathname.startsWith('/guide'),
+      adminOnly: false,
+    },
   ];
+
 
   const visibleNavItems = allNavItems.filter((item) => !item.adminOnly || isAdmin);
 
@@ -91,6 +102,7 @@ export function Navbar({ onRefresh }: NavbarProps) {
     'Kullanıcı';
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm shadow-sm">
       <div className="mx-auto max-w-screen-2xl px-6">
         <div className="flex h-16 items-center justify-between">
@@ -201,6 +213,12 @@ export function Navbar({ onRefresh }: NavbarProps) {
         </div>
       </div>
     </header>
-  );
+    {/* Powered by Akyasan */}
+    <div className="bg-slate-900 border-b border-slate-800 py-1 px-6">
+      <p className="text-center text-[10px] text-slate-500 tracking-widest font-medium uppercase">
+        Powered by Akyasan
+      </p>
+    </div>
+  </>);
 }
 

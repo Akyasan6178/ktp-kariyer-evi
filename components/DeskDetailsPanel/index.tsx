@@ -21,13 +21,13 @@ import { CreateRentalDialog } from '@/components/CreateRentalDialog';
 import { ExtendRentalDialog } from '@/components/ExtendRentalDialog';
 import { getRentalStatusDetails } from '@/lib/utils/rentalStatus';
 import { getTotalRentalRevenue } from '@/lib/services/extensions';
+import { formatDateLong, formatDate } from '@/lib/utils/format';
+import { STATUS_BADGE, PAYMENT_BADGE, PACKAGE_LABEL } from '@/lib/utils/badges';
 import type {
   DeskWithRental,
-  DeskStatus,
-  PaymentStatus,
-  PackageType,
   RentalRevenueSummary,
 } from '@/lib/types';
+
 import { cn } from '@/lib/utils';
 import {
   User,
@@ -54,25 +54,6 @@ interface DeskDetailsPanelProps {
   onRentalCreated?: () => Promise<void> | void;
 }
 
-// ── Etiket / renk haritaları ─────────────────────────────────
-const STATUS_BADGE: Record<DeskStatus, { label: string; className: string }> = {
-  available: { label: 'Boş', className: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-  occupied: { label: 'Dolu', className: 'bg-red-100 text-red-700 border-red-200' },
-  suspended: { label: 'Askıda', className: 'bg-amber-100 text-amber-700 border-amber-200' },
-  expiring: { label: 'Dolmak Üzere', className: 'bg-blue-100 text-blue-700 border-blue-200' },
-};
-
-const PAYMENT_BADGE: Record<PaymentStatus, { label: string; className: string }> = {
-  pending: { label: 'Bekliyor', className: 'bg-amber-100 text-amber-800 border-amber-200' },
-  deposit: { label: 'Kapora', className: 'bg-sky-100 text-sky-800 border-sky-200' },
-  paid: { label: 'Ödendi', className: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
-};
-
-const PACKAGE_LABEL: Record<PackageType, string> = {
-  weekly: 'Haftalık',
-  monthly: 'Aylık',
-  yearly: 'Yıllık',
-};
 
 // ── Alt bileşenler ───────────────────────────────────────────
 interface InfoRowProps {
@@ -122,16 +103,10 @@ export function DeskDetailsPanel({
   const [revenueSummary, setRevenueSummary] = useState<RentalRevenueSummary | null>(null);
   const [loadingRevenue, setLoadingRevenue] = useState(false);
 
-  const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('tr-TR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-
   const statusConfig = desk ? STATUS_BADGE[desk.status] : null;
   const rental = desk?.active_rental ?? null;
   const rentalStatus = rental ? getRentalStatusDetails(rental.end_date) : null;
+
 
   // ── Uzatma ve Toplam Gelir Verilerini Yükle ────────────────
   const loadRevenue = useCallback(async () => {
@@ -382,14 +357,16 @@ export function DeskDetailsPanel({
                       <InfoRow
                         icon={Calendar}
                         label="Başlangıç Tarihi"
-                        value={formatDate(rental.start_date)}
+                        value={formatDateLong(rental.start_date)}
+
                       />
                       <InfoRow
                         icon={Calendar}
                         label="Güncel Bitiş Tarihi"
                         value={
                           <span className="font-bold text-slate-800">
-                            {formatDate(rental.end_date)}
+                            {formatDateLong(rental.end_date)}
+
                           </span>
                         }
                       />

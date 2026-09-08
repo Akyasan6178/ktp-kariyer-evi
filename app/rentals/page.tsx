@@ -1,13 +1,7 @@
 'use client';
 
-// ============================================================
-// /rentals – Profesyonel Kiralama Yönetim Ekranı
-// KTP-005 Süre Otomasyonu & Yönetimi
-// Durum kolonu: 🔴 Süresi Doldu, 🟠 X Gün Kaldı, 🟢 Aktif
-// Süre Uzat (+1 Hafta, +1 Ay, +1 Yıl) dialogu entegreli.
-// ============================================================
-
 import React, { useState } from 'react';
+
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { useRentals, type GroupFilter, type PaymentFilter } from '@/hooks/useRentals';
@@ -15,6 +9,8 @@ import type { RentalDetailed, PackageType, PaymentStatus, RentalRevenueSummary }
 import { ExtendRentalDialog } from '@/components/ExtendRentalDialog';
 import { getRentalStatusDetails } from '@/lib/utils/rentalStatus';
 import { getTotalRentalRevenue } from '@/lib/services/extensions';
+import { formatDate } from '@/lib/utils/format';
+import { PAYMENT_BADGE, PACKAGE_LABEL } from '@/lib/utils/badges';
 import {
   Dialog,
   DialogContent,
@@ -43,43 +39,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-function formatDate(dateStr: string): string {
-  if (!dateStr) return '—';
-  try {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('tr-TR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
-  } catch {
-    return dateStr;
-  }
-}
 
-const PACKAGE_LABELS: Record<PackageType, string> = {
-  weekly: 'Haftalık',
-  monthly: 'Aylık',
-  yearly: 'Yıllık',
-};
 
-const PAYMENT_CONFIG: Record<
-  PaymentStatus,
-  { label: string; badgeClass: string }
-> = {
-  paid: {
-    label: 'Ödendi',
-    badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  },
-  deposit: {
-    label: 'Kapora',
-    badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
-  },
-  pending: {
-    label: 'Bekliyor',
-    badgeClass: 'bg-amber-100 text-amber-800 border-amber-200',
-  },
-};
 
 export default function RentalsPage() {
   const {
@@ -482,7 +443,7 @@ export default function RentalsPage() {
                   filteredRentals.map((rental) => {
                     const status = getRentalStatusDetails(rental.end_date);
                     const payment =
-                      PAYMENT_CONFIG[rental.payment_status] || PAYMENT_CONFIG.pending;
+                      PAYMENT_BADGE[rental.payment_status] || PAYMENT_BADGE.pending;
 
                     return (
                       <tr
@@ -546,7 +507,8 @@ export default function RentalsPage() {
                         <td className="py-3 px-4 whitespace-nowrap">
                           <div>
                             <span className="font-semibold text-slate-800">
-                              {PACKAGE_LABELS[rental.package_type] || rental.package_type}
+                              {PACKAGE_LABEL[rental.package_type] || rental.package_type}
+
                             </span>
                             <p className="text-[10px] text-slate-400">
                               ₺{rental.price.toLocaleString('tr-TR')}
@@ -569,11 +531,12 @@ export default function RentalsPage() {
                           <span
                             className={cn(
                               'inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border',
-                              payment.badgeClass,
+                              payment.className,
                             )}
                           >
                             {payment.label}
                           </span>
+
                         </td>
 
                         {/* 9. Durum (Şartname: 🔴 Süresi Doldu, 🟠 X Gün Kaldı, 🟢 Aktif) */}
@@ -741,7 +704,8 @@ export default function RentalsPage() {
                 <div>
                   <p className="text-slate-400 text-[10px]">Paket Tipi</p>
                   <p className="font-bold text-slate-800 mt-0.5">
-                    {selectedRental && PACKAGE_LABELS[selectedRental.package_type]}
+                    {selectedRental && PACKAGE_LABEL[selectedRental.package_type]}
+
                   </p>
                 </div>
                 <div>
@@ -765,8 +729,9 @@ export default function RentalsPage() {
                 <div>
                   <p className="text-slate-400 text-[10px]">Ödeme Durumu</p>
                   <p className="font-bold text-slate-800 mt-0.5">
-                    {selectedRental && PAYMENT_CONFIG[selectedRental.payment_status]?.label}
+                    {selectedRental && PAYMENT_BADGE[selectedRental.payment_status]?.label}
                   </p>
+
                 </div>
                 <div>
                   <p className="text-slate-400 text-[10px]">Ödeme Notu</p>
@@ -813,7 +778,8 @@ export default function RentalsPage() {
               {detailRevenue?.extensions && detailRevenue.extensions.length > 0 ? (
                 <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
                   {detailRevenue.extensions.map((ext) => {
-                    const badge = PAYMENT_CONFIG[ext.payment_status] || PAYMENT_CONFIG.pending;
+                    const badge = PAYMENT_BADGE[ext.payment_status] || PAYMENT_BADGE.pending;
+
                     return (
                       <div
                         key={ext.id}
@@ -826,9 +792,10 @@ export default function RentalsPage() {
                           <span
                             className={cn(
                               'px-2 py-0.5 rounded-full text-[10px] font-bold border',
-                              badge.badgeClass,
+                              badge.className,
                             )}
                           >
+
                             {badge.label}
                           </span>
                         </div>
@@ -1058,8 +1025,9 @@ export default function RentalsPage() {
         <DialogContent className="sm:max-w-md p-6 border-slate-200 shadow-2xl rounded-2xl">
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
-              <CheckCircle2 className="h-5 w-5" />
+              <XCircle className="h-5 w-5" />
             </div>
+
             <div>
               <DialogTitle className="text-base font-bold text-slate-900">
                 Kiralamayı Sonlandır
@@ -1092,6 +1060,7 @@ export default function RentalsPage() {
             >
               {actionLoading ? 'Sonlandırılıyor…' : 'Evet, Sonlandır'}
             </Button>
+
           </div>
         </DialogContent>
       </Dialog>

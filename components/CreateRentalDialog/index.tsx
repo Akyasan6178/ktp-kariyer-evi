@@ -19,7 +19,9 @@ import { toast } from 'sonner';
 import { createStudent } from '@/lib/services/students';
 import { createRental } from '@/lib/services/rentals';
 import { useSettings } from '@/hooks/useSettings';
+import { getTodayString, calculateEndDate } from '@/lib/utils/format';
 import type { DeskWithRental, PackageType, PaymentStatus } from '@/lib/types';
+
 import {
   User,
   Phone,
@@ -52,32 +54,6 @@ interface FormState {
   paymentNote: string;
 }
 
-function getTodayString(): string {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-function calculateEndDate(startDateStr: string, pkg: PackageType): string {
-  if (!startDateStr) return '';
-  const d = new Date(startDateStr);
-  if (isNaN(d.getTime())) return '';
-
-  if (pkg === 'weekly') {
-    d.setDate(d.getDate() + 7);
-  } else if (pkg === 'monthly') {
-    d.setMonth(d.getMonth() + 1);
-  } else if (pkg === 'yearly') {
-    d.setFullYear(d.getFullYear() + 1);
-  }
-
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
 
 const DEFAULT_PRICES: Record<PackageType, string> = {
   weekly: '750',
