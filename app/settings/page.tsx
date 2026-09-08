@@ -128,25 +128,25 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-slate-50 pb-24">
       <Navbar />
 
-      <main className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-screen-xl px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Üst Başlık */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white shadow-md">
-              <Settings className="h-6 w-6 text-emerald-400" />
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-slate-900 text-white shadow-md shrink-0">
+              <Settings className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-slate-900">
                 Ayarlar Merkezi
               </h1>
-              <p className="text-xs text-slate-500 sm:text-sm">
+              <p className="text-xs text-slate-500 sm:text-sm mt-0.5">
                 Kütüphane bilgileri, Wi-Fi erişimi ve dinamik kiralama fiyatlarını tek noktadan yönetin.
               </p>
             </div>
           </div>
 
           {hasChanges && (
-            <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-1.5 text-xs font-semibold text-amber-800 animate-pulse">
+            <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-800 animate-pulse self-start sm:self-auto">
               <span className="h-2 w-2 rounded-full bg-amber-500" />
               <span>Kaydedilmemiş değişiklikler var</span>
             </div>
@@ -161,9 +161,9 @@ export default function SettingsPage() {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
             {/* 1. KÜTÜPHANE VE İLETİŞİM BİLGİLERİ */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-8 shadow-xs">
               <div className="mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
                   <Building2 className="h-5 w-5" />
@@ -435,13 +435,13 @@ export default function SettingsPage() {
             </div>
 
             {/* BUTONLAR & AKSİYON BARI */}
-            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end border-t border-slate-200 pt-6">
+            <div className="flex flex-col-reverse gap-2.5 sm:flex-row sm:items-center sm:justify-end border-t border-slate-200 pt-6">
               {hasChanges && (
                 <button
                   type="button"
                   onClick={handleReset}
                   disabled={isSaving}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900 disabled:opacity-50"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 min-h-[44px] text-xs font-bold text-slate-700 shadow-2xs transition hover:bg-slate-50 hover:text-slate-900 active:scale-95 disabled:opacity-50"
                 >
                   <RotateCcw className="h-4 w-4" />
                   <span>Değişiklikleri Sıfırla</span>
@@ -451,7 +451,7 @@ export default function SettingsPage() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-8 py-3 text-xs font-bold text-white shadow-md transition hover:bg-emerald-800 disabled:opacity-50"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-8 min-h-[44px] text-xs font-bold text-white shadow-md transition hover:bg-emerald-800 active:scale-95 disabled:opacity-50"
               >
                 {isSaving ? (
                   <>

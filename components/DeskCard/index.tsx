@@ -65,7 +65,8 @@ export function DeskCard({ desk, onClick, className }: DeskCardProps) {
       className={cn(
         'relative flex items-center justify-center select-none',
         'w-[30px] h-[24px] sm:w-[32px] sm:h-[26px] rounded-[3px] border transition-all duration-150',
-        'cursor-pointer hover:scale-115 hover:z-30 hover:shadow-md',
+        'cursor-pointer hover:scale-115 active:scale-95 hover:z-30 hover:shadow-md',
+        'before:absolute before:-inset-2 sm:before:-inset-1 before:content-[\'\']',
         'focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-slate-700',
         style.bg,
         style.border,

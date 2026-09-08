@@ -135,12 +135,12 @@ export default function GuidePage() {
             return (
               <div
                 key={section.id}
-                className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:shadow-md hover:border-slate-300"
+                className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-sm transition hover:shadow-md hover:border-slate-300"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3 sm:gap-4">
                   {/* İkon */}
                   <div
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${section.iconBg}`}
+                    className={`flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl ${section.iconBg}`}
                   >
                     <Icon className={`h-5 w-5 ${section.iconColor}`} />
                   </div>

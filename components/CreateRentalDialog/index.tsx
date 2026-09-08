@@ -217,33 +217,33 @@ export function CreateRentalDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && !loading && onClose()}>
-      <DialogContent className="sm:max-w-xl max-h-[92vh] overflow-y-auto p-0 gap-0 border-slate-200 shadow-2xl rounded-2xl">
+      <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto p-0 gap-0 border-slate-200 shadow-2xl rounded-2xl">
         {/* Header Alanı */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 p-6 text-white border-b border-slate-800">
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 p-4 sm:p-6 text-white border-b border-slate-800">
           <DialogHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400">
-                  <Sparkles className="h-6 w-6" />
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 shrink-0">
+                  <Sparkles className="h-5 w-5 sm:h-6 sm:w-6" />
                 </div>
                 <div>
-                  <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">
-                    Masa {desk?.code} Kiralama Oluştur
+                  <DialogTitle className="text-base sm:text-xl font-bold text-white flex items-center gap-2">
+                    Masa {desk?.code} Kiralama
                   </DialogTitle>
                   <DialogDescription className="text-slate-300 text-xs mt-0.5">
                     {desk?.section} Bölgesi · Yeni öğrenci kaydı ve masa tahsisi
                   </DialogDescription>
                 </div>
               </div>
-              <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300 border border-emerald-500/30">
-                Masa Boş
+              <span className="shrink-0 rounded-full bg-emerald-500/20 px-2.5 py-1 text-[11px] sm:text-xs font-semibold text-emerald-300 border border-emerald-500/30">
+                Boş
               </span>
             </div>
           </DialogHeader>
         </div>
 
         {/* Form Alanı */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5 bg-white">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5 bg-white">
           {/* ================= 1. ÖĞRENCİ BİLGİLERİ ================= */}
           <div>
             <div className="flex items-center gap-2 mb-3">
@@ -265,7 +265,7 @@ export function CreateRentalDialog({
                   value={form.fullName}
                   onChange={(e) => setForm({ ...form, fullName: e.target.value })}
                   disabled={loading}
-                  className={`w-full px-3.5 py-2 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
+                  className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
                     errors.fullName
                       ? 'border-red-400 focus:ring-red-200 bg-red-50/30'
                       : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-100'
@@ -287,7 +287,7 @@ export function CreateRentalDialog({
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   disabled={loading}
-                  className={`w-full px-3.5 py-2 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
+                  className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
                     errors.phone
                       ? 'border-red-400 focus:ring-red-200 bg-red-50/30'
                       : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-100'
@@ -310,7 +310,7 @@ export function CreateRentalDialog({
                       type="button"
                       onClick={() => setForm({ ...form, groupType: group })}
                       disabled={loading}
-                      className={`flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-sm font-semibold border transition-all ${
+                      className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold border transition-all min-h-[44px] ${
                         form.groupType === group
                           ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
                           : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
@@ -343,7 +343,7 @@ export function CreateRentalDialog({
                   value={form.parentName}
                   onChange={(e) => setForm({ ...form, parentName: e.target.value })}
                   disabled={loading}
-                  className="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none"
                 />
               </div>
 
@@ -355,7 +355,7 @@ export function CreateRentalDialog({
                   value={form.parentPhone}
                   onChange={(e) => setForm({ ...form, parentPhone: e.target.value })}
                   disabled={loading}
-                  className="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none"
                 />
               </div>
             </div>
@@ -375,7 +375,7 @@ export function CreateRentalDialog({
               <label className="text-xs font-semibold text-slate-700">
                 Paket Türü <span className="text-red-500">*</span>
               </label>
-              <div className="grid grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-3 gap-2">
                 {(
                   [
                     { key: 'weekly', label: 'Haftalık' },
@@ -388,7 +388,7 @@ export function CreateRentalDialog({
                     type="button"
                     onClick={() => handlePackageChange(key)}
                     disabled={loading}
-                    className={`py-2 px-3 rounded-lg text-xs font-semibold border transition-all text-center flex flex-col items-center justify-center ${
+                    className={`py-2 px-2 sm:px-3 rounded-lg text-xs font-semibold border transition-all text-center flex flex-col items-center justify-center min-h-[50px] ${
                       form.packageType === key
                         ? 'bg-emerald-50 border-emerald-500 text-emerald-800 ring-2 ring-emerald-200 font-bold'
                         : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -414,7 +414,7 @@ export function CreateRentalDialog({
                   value={form.startDate}
                   onChange={(e) => handleStartDateChange(e.target.value)}
                   disabled={loading}
-                  className={`w-full px-3.5 py-2 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
+                  className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
                     errors.startDate
                       ? 'border-red-400 focus:ring-red-200 bg-red-50/30'
                       : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-100'
@@ -434,7 +434,7 @@ export function CreateRentalDialog({
                   value={form.endDate}
                   onChange={(e) => setForm({ ...form, endDate: e.target.value })}
                   disabled={loading}
-                  className={`w-full px-3.5 py-2 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
+                  className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-all focus:outline-none focus:ring-2 ${
                     errors.endDate
                       ? 'border-red-400 focus:ring-red-200 bg-red-50/30'
                       : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-100'
@@ -463,7 +463,7 @@ export function CreateRentalDialog({
                   Kiralama Ücreti (₺) <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3.5 top-2 text-slate-400 font-medium text-sm">₺</span>
+                  <span className="absolute left-3.5 top-2.5 text-slate-400 font-medium text-sm">₺</span>
                   <input
                     type="number"
                     min="0"
@@ -472,7 +472,7 @@ export function CreateRentalDialog({
                     value={form.price}
                     onChange={(e) => setForm({ ...form, price: e.target.value })}
                     disabled={loading}
-                    className={`w-full pl-8 pr-3.5 py-2 text-sm rounded-lg border font-semibold transition-all focus:outline-none focus:ring-2 ${
+                    className={`w-full pl-8 pr-3.5 py-2.5 text-sm rounded-lg border font-semibold transition-all focus:outline-none focus:ring-2 ${
                       errors.price
                         ? 'border-red-400 focus:ring-red-200 bg-red-50/30'
                         : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-100 text-slate-800'
@@ -493,7 +493,7 @@ export function CreateRentalDialog({
                   value={form.paymentStatus}
                   onChange={(e) => setForm({ ...form, paymentStatus: e.target.value as PaymentStatus })}
                   disabled={loading}
-                  className="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-200 bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-200 bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none min-h-[42px]"
                 >
                   <option value="paid">Ödendi</option>
                   <option value="deposit">Kapora</option>
@@ -513,27 +513,27 @@ export function CreateRentalDialog({
                   value={form.paymentNote}
                   onChange={(e) => setForm({ ...form, paymentNote: e.target.value })}
                   disabled={loading}
-                  className="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all focus:outline-none"
                 />
               </div>
             </div>
           </div>
 
           {/* ================= BUTONLAR ================= */}
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-slate-100 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
               disabled={loading}
-              className="px-5 text-slate-600 border-slate-300 hover:bg-slate-50"
+              className="w-full sm:w-auto px-5 min-h-[44px] text-slate-600 border-slate-300 hover:bg-slate-50"
             >
               İptal
             </Button>
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold shadow-md shadow-emerald-600/20 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 min-h-[44px] rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold shadow-md shadow-emerald-600/20 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>

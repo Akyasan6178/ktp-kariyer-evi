@@ -29,7 +29,7 @@ export default function HomePage() {
       <Navbar onRefresh={refetch} />
 
       {/* ===== ANA İÇERİK ===== */}
-      <main className="mx-auto max-w-screen-2xl px-6 py-6 space-y-6">
+      <main className="mx-auto max-w-screen-2xl px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
 
         {/* Sayfa başlığı & breadcrumb */}
         <div className="flex items-start justify-between">
@@ -39,8 +39,8 @@ export default function HomePage() {
               <span>/</span>
               <span className="text-slate-600 font-medium">Kütüphane Haritası</span>
             </div>
-            <h2 className="text-2xl font-bold text-slate-900">Kütüphane Haritası</h2>
-            <p className="text-sm text-slate-500 mt-0.5">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Kütüphane Haritası</h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
               {loading
                 ? 'Masalar yükleniyor…'
                 : `${desks.length} masanın gerçek zamanlı doluluk durumu`}
@@ -52,22 +52,22 @@ export default function HomePage() {
         <StatisticsCards stats={stats} />
 
         {/* Kütüphane Kat Planı Kartı */}
-        <div className="max-w-5xl mx-auto w-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="max-w-5xl mx-auto w-full rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
           {/* Kart Başlığı */}
-          <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 px-4 sm:px-6 py-3.5 sm:py-4">
             <div className="flex items-center gap-2.5">
-              <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <h3 className="text-base font-bold text-slate-800">Kütüphane Kat Planı</h3>
-              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-600 uppercase tracking-wider">
+              <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <h3 className="text-sm sm:text-base font-bold text-slate-800">Kütüphane Kat Planı</h3>
+              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider">
                 {loading ? 'YÜKLENİYOR' : 'CANLI PLAN'}
               </span>
             </div>
-            <div className="flex items-center gap-4 text-xs text-slate-400">
-              <span>Masaya tıklayarak kiralama / detay görüntüleyin</span>
+            <div className="flex items-center gap-4 text-[11px] sm:text-xs text-slate-400">
+              <span>Masaya dokunarak kiralama / detay görüntüleyin</span>
             </div>
           </div>
 
-          <div className="p-6">
+          <div className="p-2 sm:p-6 overflow-x-auto touch-scroll">
             <LibraryMap
               desks={desks}
               loading={loading}
@@ -78,7 +78,7 @@ export default function HomePage() {
         </div>
 
         {/* Alt bilgi */}
-        <div className="pb-6 flex items-center justify-between text-[11px] text-slate-400">
+        <div className="pb-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400 text-center sm:text-left">
           <span>© 2026 Kütüphane Yönetim Sistemi</span>
           <span>v2.0.0 · Supabase</span>
         </div>

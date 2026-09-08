@@ -340,22 +340,22 @@ export default function ReportsPage() {
     <div className="min-h-screen bg-slate-50">
       <Navbar onRefresh={() => loadReports(true)} />
 
-      <main className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      <main className="mx-auto max-w-screen-2xl px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-8">
         {/* ============================================================ */}
         {/* 1. ÜST HEADER & AKSİYONLAR                                   */}
         {/* ============================================================ */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-md">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-md shrink-0">
                 <BarChart3 className="h-5 w-5 text-emerald-400" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-slate-900">
                   Gelir ve Finans Yönetimi
                 </h1>
-                <p className="text-xs text-slate-500 sm:text-sm">
-                  Kariyer Evi VIP Kütüphane &bull; Anlık ciro, tahsilat, bölge performansı ve finansal işlemler
+                <p className="text-xs text-slate-500 sm:text-sm mt-0.5">
+                  Kariyer Evi VIP &bull; Anlık ciro, tahsilat, bölge performansı ve finansal işlemler
                 </p>
               </div>
             </div>
@@ -366,7 +366,7 @@ export default function ReportsPage() {
             <button
               onClick={() => loadReports(true)}
               disabled={isRefreshing}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900 disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-2xs transition hover:bg-slate-50 hover:text-slate-900 active:scale-95 disabled:opacity-50 min-h-[42px] sm:min-h-0"
               title="Verileri Yenile"
             >
               <RefreshCw className={cn('h-3.5 w-3.5', isRefreshing && 'animate-spin text-emerald-600')} />
@@ -375,7 +375,7 @@ export default function ReportsPage() {
 
             <button
               onClick={() => exportToSpreadsheet(false)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs transition hover:bg-slate-50 hover:text-slate-900 active:scale-95 min-h-[42px] sm:min-h-0"
             >
               <Download className="h-3.5 w-3.5 text-blue-600" />
               <span>CSV İndir</span>
@@ -383,7 +383,7 @@ export default function ReportsPage() {
 
             <button
               onClick={() => exportToSpreadsheet(true)}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-700 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-800"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-emerald-800 active:scale-95 min-h-[42px] sm:min-h-0"
             >
               <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-200" />
               <span>Excel'e Aktar</span>
@@ -408,77 +408,77 @@ export default function ReportsPage() {
             {/* ============================================================ */}
             {/* 2. FİNANS DASHBOARDU – 8 ADET ANA METRİK KARTI                 */}
             {/* ============================================================ */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8">
               {/* Bugünkü Gelir */}
-              <div className="relative overflow-hidden rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-white p-4 shadow-sm">
+              <div className="relative overflow-hidden rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-white p-3 sm:p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-emerald-700">
-                  <span className="text-[11px] font-bold uppercase tracking-wider">Bugünkü Gelir</span>
-                  <div className="rounded-md bg-emerald-100 p-1">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider truncate">Bugünkü Gelir</span>
+                  <div className="rounded-md bg-emerald-100 p-1 shrink-0">
                     <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
                   </div>
                 </div>
-                <div className="mt-2 text-lg font-bold text-slate-900 sm:text-xl">
+                <div className="mt-1 sm:mt-2 text-base sm:text-lg lg:text-xl font-bold text-slate-900 truncate">
                   {formatCurrency(data.summary.todayRevenue)}
                 </div>
-                <div className="mt-1 text-[10px] text-emerald-600 font-medium">Günlük tahsilat</div>
+                <div className="mt-1 text-[10px] text-emerald-600 font-medium truncate">Günlük tahsilat</div>
               </div>
 
               {/* Bu Ayki Gelir */}
-              <div className="relative overflow-hidden rounded-xl border border-blue-100 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-white p-4 shadow-sm">
+              <div className="relative overflow-hidden rounded-xl border border-blue-100 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-white p-3 sm:p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-blue-700">
-                  <span className="text-[11px] font-bold uppercase tracking-wider">Bu Ayki Gelir</span>
-                  <div className="rounded-md bg-blue-100 p-1">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider truncate">Bu Ayki Gelir</span>
+                  <div className="rounded-md bg-blue-100 p-1 shrink-0">
                     <Calendar className="h-3.5 w-3.5 text-blue-600" />
                   </div>
                 </div>
-                <div className="mt-2 text-lg font-bold text-slate-900 sm:text-xl">
+                <div className="mt-1 sm:mt-2 text-base sm:text-lg lg:text-xl font-bold text-slate-900 truncate">
                   {formatCurrency(data.summary.monthRevenue)}
                 </div>
-                <div className="mt-1 text-[10px] text-blue-600 font-medium">Bu ayki toplam ciro</div>
+                <div className="mt-1 text-[10px] text-blue-600 font-medium truncate">Bu ayki ciro</div>
               </div>
 
               {/* Bu Yılki Gelir */}
-              <div className="relative overflow-hidden rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-500/10 via-indigo-500/5 to-white p-4 shadow-sm">
+              <div className="relative overflow-hidden rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-500/10 via-indigo-500/5 to-white p-3 sm:p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-indigo-700">
-                  <span className="text-[11px] font-bold uppercase tracking-wider">Bu Yılki Gelir</span>
-                  <div className="rounded-md bg-indigo-100 p-1">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider truncate">Bu Yılki Gelir</span>
+                  <div className="rounded-md bg-indigo-100 p-1 shrink-0">
                     <Award className="h-3.5 w-3.5 text-indigo-600" />
                   </div>
                 </div>
-                <div className="mt-2 text-lg font-bold text-slate-900 sm:text-xl">
+                <div className="mt-1 sm:mt-2 text-base sm:text-lg lg:text-xl font-bold text-slate-900 truncate">
                   {formatCurrency(data.summary.yearRevenue)}
                 </div>
-                <div className="mt-1 text-[10px] text-indigo-600 font-medium">Yıllık toplam hacim</div>
+                <div className="mt-1 text-[10px] text-indigo-600 font-medium truncate">Yıllık toplam hacim</div>
               </div>
 
               {/* Toplam Gelir */}
-              <div className="relative overflow-hidden rounded-xl border border-slate-900/10 bg-gradient-to-br from-slate-900 to-slate-800 p-4 text-white shadow-md">
+              <div className="relative overflow-hidden rounded-xl border border-slate-900/10 bg-gradient-to-br from-slate-900 to-slate-800 p-3 sm:p-4 text-white shadow-md">
                 <div className="flex items-center justify-between text-slate-300">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-400 truncate">
                     Toplam Gelir
                   </span>
-                  <div className="rounded-md bg-white/10 p-1">
+                  <div className="rounded-md bg-white/10 p-1 shrink-0">
                     <Wallet className="h-3.5 w-3.5 text-emerald-400" />
                   </div>
                 </div>
-                <div className="mt-2 text-lg font-extrabold text-white sm:text-xl tracking-tight">
+                <div className="mt-1 sm:mt-2 text-base sm:text-lg lg:text-xl font-extrabold text-white tracking-tight truncate">
                   {formatCurrency(data.summary.totalRevenue)}
                 </div>
-                <div className="mt-1 text-[10px] text-slate-300">Kiralama + Uzatmalar</div>
+                <div className="mt-1 text-[10px] text-slate-300 truncate">Kiralama + Uzatmalar</div>
               </div>
 
               {/* Bekleyen Tahsilatlar */}
-              <div className="relative overflow-hidden rounded-xl border border-rose-100 bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-white p-4 shadow-sm">
+              <div className="relative overflow-hidden rounded-xl border border-rose-100 bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-white p-3 sm:p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-rose-700">
-                  <span className="text-[11px] font-bold uppercase tracking-wider">Bekleyen Tahsilat</span>
-                  <div className="rounded-md bg-rose-100 p-1">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider truncate">Bekleyen Tahsilat</span>
+                  <div className="rounded-md bg-rose-100 p-1 shrink-0">
                     <AlertCircle className="h-3.5 w-3.5 text-rose-600" />
                   </div>
                 </div>
-                <div className="mt-2 text-lg font-bold text-rose-600 sm:text-xl">
+                <div className="mt-1 sm:mt-2 text-base sm:text-lg lg:text-xl font-bold text-rose-600 truncate">
                   {formatCurrency(data.summary.pendingTotal)}
                 </div>
-                <div className="mt-1 text-[10px] text-rose-500 font-medium">Alınacak bakiye</div>
+                <div className="mt-1 text-[10px] text-rose-500 font-medium truncate">Alınacak bakiye</div>
               </div>
 
               {/* Kaporalı Öğrenciler */}
@@ -934,29 +934,30 @@ export default function ReportsPage() {
             </div>
 
             {/* ============================================================ */}
-            {/* 5. SON İŞLEMLER TABLOSU                                       */}
             {/* ============================================================ */}
-            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            {/* 5. SON İŞLEMLER                                               */}
+            {/* ============================================================ */}
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
               {/* Tablo Üstü Başlık ve Filtre Barı */}
-              <div className="border-b border-slate-200 p-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="border-b border-slate-200 p-4 sm:p-6 space-y-3 sm:space-y-0">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="text-base font-bold text-slate-900">Son Finansal İşlemler</h2>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 mt-0.5">
                       İlk masa kiralamaları ve süre uzatma ödemeleri kronolojik listesi
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                     {/* Arama Input */}
-                    <div className="relative">
+                    <div className="relative w-full sm:w-64">
                       <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
                       <input
                         type="text"
-                        placeholder="Öğrenci, masa kodu veya not ara..."
+                        placeholder="Öğrenci, masa kodu veya not..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="h-9 w-64 rounded-lg border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        className="h-10 sm:h-9 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
                       />
                     </div>
 
@@ -964,7 +965,7 @@ export default function ReportsPage() {
                     <select
                       value={typeFilter}
                       onChange={(e) => setTypeFilter(e.target.value as any)}
-                      className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-700 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                      className="h-10 sm:h-9 flex-1 sm:flex-none rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-700 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     >
                       <option value="all">Tüm İşlemler</option>
                       <option value="İlk Kiralama">İlk Kiralama</option>
@@ -975,7 +976,7 @@ export default function ReportsPage() {
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value as any)}
-                      className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-700 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                      className="h-10 sm:h-9 flex-1 sm:flex-none rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-700 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     >
                       <option value="all">Tüm Durumlar</option>
                       <option value="paid">Ödendi</option>
@@ -986,8 +987,82 @@ export default function ReportsPage() {
                 </div>
               </div>
 
-              {/* Tablo İçeriği */}
-              <div className="overflow-x-auto">
+              {/* MOBİL GÖRÜNÜM: KART LİSTESİ (< md) */}
+              <div className="block md:hidden divide-y divide-slate-100 p-2 sm:p-4">
+                {filteredTransactions.length === 0 ? (
+                  <div className="py-12 text-center text-xs text-slate-400">
+                    Arama kriterlerine uygun işlem bulunamadı.
+                  </div>
+                ) : (
+                  filteredTransactions.map((tx) => (
+                    <div key={tx.id} className="p-3.5 space-y-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="font-bold text-sm text-slate-900">{tx.studentName}</div>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
+                              {tx.studentGroup}
+                            </span>
+                            <span className="font-bold text-xs text-slate-700">Masa {tx.deskCode}</span>
+                            <span
+                              className={cn(
+                                'rounded px-1.5 py-0.2 text-[10px] font-bold',
+                                tx.section === 'A'
+                                  ? 'bg-blue-100 text-blue-700'
+                                  : tx.section === 'B'
+                                  ? 'bg-purple-100 text-purple-700'
+                                  : 'bg-emerald-100 text-emerald-700'
+                              )}
+                            >
+                              {tx.section}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <div className="font-black text-sm text-slate-900">{formatCurrency(tx.amount)}</div>
+                          <div className="mt-0.5">
+                            {tx.paymentStatus === 'paid' ? (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                                Ödendi
+                              </span>
+                            ) : tx.paymentStatus === 'deposit' ? (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                                Kapora
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-800">
+                                Bekliyor
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-50">
+                        <span className="font-medium text-slate-600">{formatDateTime(tx.date)}</span>
+                        {tx.type === 'İlk Kiralama' ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700 border border-blue-200">
+                            İlk Kiralama
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2 py-0.5 text-[10px] font-bold text-purple-700 border border-purple-200">
+                            Süre Uzatma
+                          </span>
+                        )}
+                      </div>
+
+                      {tx.note && (
+                        <p className="text-[11px] text-slate-500 italic bg-slate-50 p-2 rounded-lg">
+                          Not: {tx.note}
+                        </p>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* MASAÜSTÜ GÖRÜNÜM: TABLO (>= md) */}
+              <div className="hidden md:block overflow-x-auto touch-scroll">
                 <table className="w-full text-left text-xs">
                   <thead className="border-b border-slate-100 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     <tr>
@@ -1094,9 +1169,9 @@ export default function ReportsPage() {
               </div>
 
               {/* Tablo Altı Toplam Bilgisi */}
-              <div className="border-t border-slate-100 bg-slate-50/60 px-6 py-3 text-xs text-slate-500 flex items-center justify-between">
+              <div className="border-t border-slate-100 bg-slate-50/60 px-4 sm:px-6 py-3 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left">
                 <span>
-                  Toplam {filteredTransactions.length} işlem listeleniyor (Tüm kayıtlar arasından)
+                  Toplam {filteredTransactions.length} işlem listeleniyor
                 </span>
                 <span className="font-semibold text-slate-700">
                   Filtrelenen Tutar:{' '}

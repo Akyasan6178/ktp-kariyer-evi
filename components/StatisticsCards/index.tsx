@@ -104,30 +104,30 @@ export function StatisticsCards({ stats }: StatisticsCardsProps) {
       : 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* 6'lı İstatistik Grid'i */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3.5">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.label}
-              className={`relative overflow-hidden rounded-xl border ${card.borderClass} ${card.bgClass} p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 flex flex-col justify-between`}
+              className={`relative overflow-hidden rounded-xl border ${card.borderClass} ${card.bgClass} p-3 sm:p-4 shadow-2xs transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 flex flex-col justify-between`}
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-1">
                 <div>
-                  <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                  <p className="text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">
                     {card.label}
                   </p>
-                  <p className={`text-2xl font-black mt-1 ${card.colorClass}`}>{card.value}</p>
+                  <p className={`text-xl sm:text-2xl font-black mt-0.5 sm:mt-1 ${card.colorClass}`}>{card.value}</p>
                 </div>
-                <div className={`rounded-lg p-2 ${card.badgeClass}`}>
-                  <Icon className="h-4 w-4" />
+                <div className={`rounded-lg p-1.5 sm:p-2 shrink-0 ${card.badgeClass}`}>
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
               </div>
 
-              <div className="mt-3 pt-2.5 border-t border-slate-200/60">
-                <p className="text-[10px] text-slate-400 truncate">{card.description}</p>
+              <div className="mt-2 sm:mt-3 pt-2 sm:pt-2.5 border-t border-slate-200/60">
+                <p className="text-[9px] sm:text-[10px] text-slate-400 truncate">{card.description}</p>
               </div>
             </div>
           );
@@ -135,16 +135,18 @@ export function StatisticsCards({ stats }: StatisticsCardsProps) {
       </div>
 
       {/* Doluluk oranı özeti */}
-      <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-2.5 shadow-sm">
-        <Clock className="h-4 w-4 text-slate-400 shrink-0" />
-        <span className="text-xs font-medium text-slate-500">Kütüphane genel doluluk oranı:</span>
-        <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 rounded-xl border border-slate-200 bg-white px-3 sm:px-4 py-2 sm:py-2.5 shadow-2xs">
+        <div className="flex items-center gap-2 shrink-0">
+          <Clock className="h-4 w-4 text-slate-400 shrink-0" />
+          <span className="text-xs font-medium text-slate-600">Doluluk Oranı:</span>
+        </div>
+        <div className="flex-1 min-w-[120px] h-2 bg-slate-100 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-emerald-500 via-amber-500 to-rose-500 rounded-full transition-all duration-700"
             style={{ width: `${occupancyRate}%` }}
           />
         </div>
-        <span className="text-xs font-bold text-slate-800">%{occupancyRate}</span>
+        <span className="text-xs font-bold text-slate-800 shrink-0">%{occupancyRate}</span>
       </div>
     </div>
   );

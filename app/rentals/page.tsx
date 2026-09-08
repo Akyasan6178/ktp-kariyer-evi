@@ -245,9 +245,9 @@ export default function RentalsPage() {
       {/* Header */}
       <Navbar onRefresh={refetch} />
 
-      <main className="mx-auto max-w-screen-2xl px-6 py-6 space-y-6">
+      <main className="mx-auto max-w-screen-2xl px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Başlık & Breadcrumb */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div>
             <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
               <Link href="/" className="hover:text-slate-600 flex items-center gap-1">
@@ -257,26 +257,26 @@ export default function RentalsPage() {
               <span>/</span>
               <span className="text-slate-600 font-semibold">Kiralama Yönetimi</span>
             </div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
               Kiralama Yönetimi
             </h2>
-            <p className="text-sm text-slate-500 mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
               Aktif kiralamaları görüntüleyin, filtreleyin, süre uzatın veya sonlandırın.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={refetch}
               disabled={loading}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-all disabled:opacity-60"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2.5 sm:py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 active:scale-95 transition-all disabled:opacity-60 min-h-[42px] sm:min-h-0"
             >
               <RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin')} />
               <span>Yenile</span>
             </button>
             <Link
               href="/"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-sm hover:bg-slate-800 transition-all"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-2xs hover:bg-slate-800 active:scale-95 transition-all min-h-[42px] sm:min-h-0"
             >
               <span>Kat Planına Git</span>
             </Link>
@@ -284,91 +284,91 @@ export default function RentalsPage() {
         </div>
 
         {/* ── Özet Sayaç Kartları ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex items-center justify-between">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
+          <div className="rounded-xl border border-slate-200 bg-white p-3 sm:p-4 shadow-2xs flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+              <p className="text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                 Toplam Aktif
               </p>
-              <p className="text-2xl font-black text-slate-900 mt-1">{stats.total}</p>
+              <p className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5 sm:mt-1">{stats.total}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-slate-100 text-slate-700">
-              <User className="h-5 w-5" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-slate-100 text-slate-700 shrink-0">
+              <User className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
           </div>
 
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm flex items-center justify-between">
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 sm:p-4 shadow-2xs flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider">
+              <p className="text-[10px] sm:text-[11px] font-semibold text-emerald-800 uppercase tracking-wider">
                 Aktif Kiralama
               </p>
-              <p className="text-2xl font-black text-emerald-700 mt-1">{stats.active}</p>
+              <p className="text-xl sm:text-2xl font-black text-emerald-700 mt-0.5 sm:mt-1">{stats.active}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-700">
-              <CheckCircle2 className="h-5 w-5" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+              <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
           </div>
 
-          <div className="rounded-xl border border-orange-200 bg-orange-50/60 p-4 shadow-sm flex items-center justify-between">
+          <div className="rounded-xl border border-orange-200 bg-orange-50/60 p-3 sm:p-4 shadow-2xs flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-semibold text-orange-800 uppercase tracking-wider">
+              <p className="text-[10px] sm:text-[11px] font-semibold text-orange-800 uppercase tracking-wider">
                 ≤ 7 Gün Kalan
               </p>
-              <p className="text-2xl font-black text-orange-700 mt-1">{stats.expiringCount}</p>
+              <p className="text-xl sm:text-2xl font-black text-orange-700 mt-0.5 sm:mt-1">{stats.expiringCount}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-orange-100 text-orange-700">
-              <Hourglass className="h-5 w-5" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-orange-100 text-orange-700 shrink-0">
+              <Hourglass className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
           </div>
 
-          <div className="rounded-xl border border-rose-200 bg-rose-50/60 p-4 shadow-sm flex items-center justify-between">
+          <div className="rounded-xl border border-rose-200 bg-rose-50/60 p-3 sm:p-4 shadow-2xs flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-semibold text-rose-800 uppercase tracking-wider">
+              <p className="text-[10px] sm:text-[11px] font-semibold text-rose-800 uppercase tracking-wider">
                 Süresi Dolan
               </p>
-              <p className="text-2xl font-black text-rose-700 mt-1">{stats.expiredCount}</p>
+              <p className="text-xl sm:text-2xl font-black text-rose-700 mt-0.5 sm:mt-1">{stats.expiredCount}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-rose-100 text-rose-700">
-              <XCircle className="h-5 w-5" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-rose-100 text-rose-700 shrink-0">
+              <XCircle className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
           </div>
         </div>
 
         {/* ── Filtre & Arama Çubuğu ── */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 shadow-2xs space-y-3 sm:space-y-4">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sm:gap-4">
             {/* Canlı Arama Input */}
-            <div className="relative flex-1 max-w-md">
+            <div className="relative flex-1 max-w-full lg:max-w-md">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
                 type="text"
-                placeholder="Öğrenci adı, masa kodu veya telefon ile ara..."
+                placeholder="Öğrenci adı, masa kodu veya telefon..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-9 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all min-h-[44px]"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
               )}
             </div>
 
-            {/* Filtre Grupları */}
-            <div className="flex flex-wrap items-center gap-3">
+            {/* Filtre Grupları (Yatay Kaydırılabilir / Wrap) */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 overflow-x-auto touch-scroll pb-1">
               {/* Grup Filtresi: Tümü, YKS, LGS */}
-              <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
+              <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl shrink-0">
                 {(['all', 'YKS', 'LGS'] as const).map((group) => (
                   <button
                     key={group}
                     onClick={() => setGroupFilter(group)}
                     className={cn(
-                      'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
+                      'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all min-h-[34px]',
                       groupFilter === group
-                        ? 'bg-white text-slate-900 shadow-sm'
+                        ? 'bg-white text-slate-900 shadow-xs'
                         : 'text-slate-600 hover:text-slate-900',
                     )}
                   >
@@ -378,7 +378,7 @@ export default function RentalsPage() {
               </div>
 
               {/* Ödeme Durumu Filtresi: Tümü, Ödendi, Kapora, Bekliyor */}
-              <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
+              <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl shrink-0">
                 {(
                   [
                     { id: 'all', label: 'Tüm Ödemeler' },
@@ -391,9 +391,9 @@ export default function RentalsPage() {
                     key={pay.id}
                     onClick={() => setPaymentFilter(pay.id as PaymentFilter)}
                     className={cn(
-                      'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
+                      'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all min-h-[34px]',
                       paymentFilter === pay.id
-                        ? 'bg-white text-slate-900 shadow-sm'
+                        ? 'bg-white text-slate-900 shadow-xs'
                         : 'text-slate-600 hover:text-slate-900',
                     )}
                   >
@@ -408,7 +408,7 @@ export default function RentalsPage() {
           {(searchQuery || groupFilter !== 'all' || paymentFilter !== 'all') && (
             <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-500">
               <span>
-                Filtrelenen sonuç: <strong>{filteredRentals.length}</strong> / {rentals.length}
+                Filtrelenen: <strong>{filteredRentals.length}</strong> / {rentals.length}
               </span>
               <button
                 onClick={() => {
@@ -424,9 +424,172 @@ export default function RentalsPage() {
           )}
         </div>
 
-        {/* ── KİRALAMA TABLOSU ── */}
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
+        {/* ══════════════════════════════════════════════════════════
+            MOBİL GÖRÜNÜM: KART LİSTESİ (< md ekranlar)
+        ══════════════════════════════════════════════════════════ */}
+        <div className="block md:hidden space-y-3">
+          {loading ? (
+            <div className="py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-200 p-6">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <Loader2 className="h-6 w-6 animate-spin text-slate-500" />
+                <span className="text-xs font-medium">Kiralamalar yükleniyor…</span>
+              </div>
+            </div>
+          ) : filteredRentals.length === 0 ? (
+            <div className="py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-200 p-6">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <Filter className="h-8 w-8 text-slate-300" />
+                <span className="text-sm font-semibold text-slate-700">Kiralama kaydı bulunamadı</span>
+                <span className="text-xs text-slate-400">Arama kriterlerini değiştirerek tekrar deneyebilirsiniz.</span>
+              </div>
+            </div>
+          ) : (
+            filteredRentals.map((rental) => {
+              const status = getRentalStatusDetails(rental.end_date);
+              const payment = PAYMENT_BADGE[rental.payment_status] || PAYMENT_BADGE.pending;
+
+              return (
+                <div key={rental.id} className="p-4 rounded-2xl border border-slate-200 bg-white shadow-2xs space-y-3">
+                  {/* Kart Başlığı: Masa Kodu, Bölge & Durum */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center justify-center font-black text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-white shadow-2xs">
+                        Masa {rental.desk?.code || '—'}
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-400 uppercase">
+                        {rental.desk?.section}
+                      </span>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                        {rental.student?.group_type || '—'}
+                      </span>
+                      {rental.desk?.status === 'suspended' && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                          Askıda
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className={cn(
+                        'inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border shadow-2xs shrink-0',
+                        status.badgeClass,
+                      )}
+                    >
+                      {status.badgeText}
+                    </span>
+                  </div>
+
+                  {/* Öğrenci Bilgisi & Telefon */}
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-900">{rental.student?.full_name}</h4>
+                    {rental.student?.parent_name && (
+                      <p className="text-[11px] text-slate-400">Veli: {rental.student.parent_name}</p>
+                    )}
+                    {rental.student?.phone && (
+                      <a
+                        href={`tel:${cleanPhoneForTel(rental.student.phone)}`}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline mt-1 py-1"
+                      >
+                        <Phone className="h-3.5 w-3.5 text-blue-500" />
+                        <span>{formatPhone(rental.student.phone)}</span>
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Tarihler & Ücret Özeti */}
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-xs">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">Paket / Ücret</span>
+                      <span className="font-semibold text-slate-800">
+                        {PACKAGE_LABEL[rental.package_type] || rental.package_type} · ₺{rental.price.toLocaleString('tr-TR')}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">Ödeme Durumu</span>
+                      <span
+                        className={cn(
+                          'inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border mt-0.5',
+                          payment.className,
+                        )}
+                      >
+                        {payment.label}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">Başlangıç</span>
+                      <span className="font-medium text-slate-700">{formatDate(rental.start_date)}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">Bitiş</span>
+                      <span className="font-bold text-slate-900">{formatDate(rental.end_date)}</span>
+                    </div>
+                  </div>
+
+                  {/* Mobil Aksiyon Butonları (Geniş dokunmatik hedefler) */}
+                  <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => openDetail(rental)}
+                      className="flex items-center justify-center gap-1 min-h-[42px] px-2 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-semibold text-xs active:scale-95 transition-all"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>Detay</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openExtend(rental)}
+                      className="flex items-center justify-center gap-1 min-h-[42px] px-2 py-1.5 rounded-xl border border-blue-200 bg-blue-50 text-blue-700 font-semibold text-xs active:scale-95 transition-all"
+                    >
+                      <Clock className="h-3.5 w-3.5" />
+                      <span>Uzat</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openEdit(rental)}
+                      className="flex items-center justify-center gap-1 min-h-[42px] px-2 py-1.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-xs active:scale-95 transition-all"
+                    >
+                      <Edit2 className="h-3.5 w-3.5" />
+                      <span>Düzenle</span>
+                    </button>
+                    {rental.desk?.status === 'suspended' ? (
+                      <button
+                        type="button"
+                        onClick={() => openUnsuspend(rental)}
+                        className="flex items-center justify-center gap-1 min-h-[42px] px-2 py-1.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 font-semibold text-xs active:scale-95 transition-all"
+                      >
+                        <PlayCircle className="h-3.5 w-3.5" />
+                        <span>Aktif</span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => openSuspend(rental)}
+                        className="flex items-center justify-center gap-1 min-h-[42px] px-2 py-1.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-700 font-semibold text-xs active:scale-95 transition-all"
+                      >
+                        <PauseCircle className="h-3.5 w-3.5" />
+                        <span>Askı</span>
+                      </button>
+                    )}
+                  </div>
+                  {/* Sonlandır Butonu (Geniş) */}
+                  <button
+                    type="button"
+                    onClick={() => openTerminate(rental)}
+                    className="w-full flex items-center justify-center gap-1.5 min-h-[40px] px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 font-semibold text-xs active:scale-98 transition-all"
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <span>Kiralamayı Sonlandır</span>
+                  </button>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* ══════════════════════════════════════════════════════════
+            MASAÜSTÜ & TABLET GÖRÜNÜM: TABLO (>= md ekranlar)
+        ══════════════════════════════════════════════════════════ */}
+        <div className="hidden md:block rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
+          <div className="overflow-x-auto touch-scroll">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50/80 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
@@ -480,7 +643,7 @@ export default function RentalsPage() {
                         {/* 1. Masa */}
                         <td className="py-3 px-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <span className="inline-flex items-center justify-center w-8 h-7 rounded-md bg-slate-900 text-white font-black text-xs shadow-sm">
+                            <span className="inline-flex items-center justify-center w-8 h-7 rounded-md bg-slate-900 text-white font-black text-xs shadow-2xs">
                               {rental.desk?.code || '—'}
                             </span>
                             <span className="text-[10px] font-bold text-slate-400 uppercase">
@@ -571,7 +734,7 @@ export default function RentalsPage() {
 
                         </td>
 
-                        {/* 9. Durum (Şartname: 🔴 Süresi Doldu, 🟠 X Gün Kaldı, 🟢 Aktif) */}
+                        {/* 9. Durum */}
                         <td className="py-3 px-4 whitespace-nowrap">
                           <span
                             className={cn(
@@ -880,24 +1043,25 @@ export default function RentalsPage() {
             </div>
           </div>
 
-          <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+          <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setDetailModalOpen(false)}
+              className="min-h-[44px] sm:min-h-0 text-slate-600"
+            >
+              Kapat
+            </Button>
             <Button
               size="sm"
               onClick={() => {
                 setDetailModalOpen(false);
                 setExtendModalOpen(true);
               }}
-              className="bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1.5"
+              className="bg-blue-600 text-white hover:bg-blue-700 flex items-center justify-center gap-1.5 min-h-[44px] sm:min-h-0"
             >
               <Clock className="h-3.5 w-3.5" />
               <span>Süre Uzat</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setDetailModalOpen(false)}
-            >
-              Kapat
             </Button>
           </div>
         </DialogContent>
@@ -908,7 +1072,7 @@ export default function RentalsPage() {
       ══════════════════════════════════════════════════════════ */}
       <Dialog open={editModalOpen} onOpenChange={(open) => !open && !actionLoading && setEditModalOpen(false)}>
         <DialogContent className="sm:max-w-lg p-0 overflow-hidden border-slate-200 shadow-2xl rounded-2xl">
-          <div className="bg-slate-900 p-5 text-white">
+          <div className="bg-slate-900 p-4 sm:p-5 text-white">
             <DialogTitle className="text-base font-bold text-white">
               Kiralamayı Düzenle: Masa {selectedRental?.desk?.code}
             </DialogTitle>
@@ -917,8 +1081,8 @@ export default function RentalsPage() {
             </DialogDescription>
           </div>
 
-          <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
-            <div className="grid grid-cols-2 gap-3">
+          <div className="p-4 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto touch-scroll">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-[11px] font-bold text-slate-700 block mb-1">
                   Paket Tipi
@@ -931,7 +1095,7 @@ export default function RentalsPage() {
                       packageType: e.target.value as PackageType,
                     }))
                   }
-                  className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-white"
+                  className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-white min-h-[42px]"
                 >
                   <option value="weekly">Haftalık</option>
                   <option value="monthly">Aylık</option>
@@ -952,12 +1116,12 @@ export default function RentalsPage() {
                       price: Number(e.target.value),
                     }))
                   }
-                  className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-white"
+                  className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-white min-h-[42px]"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-[11px] font-bold text-slate-700 block mb-1">
                   Başlangıç Tarihi
@@ -971,7 +1135,7 @@ export default function RentalsPage() {
                       startDate: e.target.value,
                     }))
                   }
-                  className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-white"
+                  className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-white min-h-[42px]"
                 />
               </div>
 
@@ -988,12 +1152,12 @@ export default function RentalsPage() {
                       endDate: e.target.value,
                     }))
                   }
-                  className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-white"
+                  className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-white min-h-[42px]"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-[11px] font-bold text-slate-700 block mb-1">
                   Ödeme Durumu
@@ -1006,7 +1170,7 @@ export default function RentalsPage() {
                       paymentStatus: e.target.value as PaymentStatus,
                     }))
                   }
-                  className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-white"
+                  className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-white min-h-[42px]"
                 >
                   <option value="paid">Ödendi</option>
                   <option value="deposit">Kapora</option>
@@ -1027,7 +1191,7 @@ export default function RentalsPage() {
                       phone: e.target.value,
                     }))
                   }
-                  className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-white"
+                  className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-white min-h-[42px]"
                 />
               </div>
             </div>
@@ -1046,17 +1210,18 @@ export default function RentalsPage() {
                     paymentNote: e.target.value,
                   }))
                 }
-                className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-white"
+                className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-white min-h-[42px]"
               />
             </div>
           </div>
 
-          <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+          <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setEditModalOpen(false)}
               disabled={actionLoading}
+              className="min-h-[44px] sm:min-h-0"
             >
               İptal
             </Button>
@@ -1064,7 +1229,7 @@ export default function RentalsPage() {
               size="sm"
               onClick={handleSaveEdit}
               disabled={actionLoading}
-              className="bg-slate-900 text-white hover:bg-slate-800"
+              className="bg-slate-900 text-white hover:bg-slate-800 min-h-[44px] sm:min-h-0"
             >
               {actionLoading ? 'Kaydediliyor…' : 'Değişiklikleri Kaydet'}
             </Button>
@@ -1080,7 +1245,7 @@ export default function RentalsPage() {
         open={terminateModalOpen}
         onOpenChange={(open) => !open && !actionLoading && setTerminateModalOpen(false)}
       >
-        <DialogContent className="sm:max-w-md p-6 border-slate-200 shadow-2xl rounded-2xl">
+        <DialogContent className="sm:max-w-md p-4 sm:p-6 border-slate-200 shadow-2xl rounded-2xl">
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
               <XCircle className="h-5 w-5" />
@@ -1101,12 +1266,13 @@ export default function RentalsPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-2">
+          <div className="mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setTerminateModalOpen(false)}
               disabled={actionLoading}
+              className="min-h-[44px] sm:min-h-0"
             >
               Vazgeç
             </Button>
@@ -1114,7 +1280,7 @@ export default function RentalsPage() {
               size="sm"
               onClick={handleConfirmTerminate}
               disabled={actionLoading}
-              className="bg-rose-600 text-white hover:bg-rose-700"
+              className="bg-rose-600 text-white hover:bg-rose-700 min-h-[44px] sm:min-h-0"
             >
               {actionLoading ? 'Sonlandırılıyor…' : 'Evet, Sonlandır'}
             </Button>
@@ -1131,7 +1297,7 @@ export default function RentalsPage() {
         open={suspendModalOpen}
         onOpenChange={(open) => !open && !actionLoading && setSuspendModalOpen(false)}
       >
-        <DialogContent className="sm:max-w-md p-6 border-slate-200 shadow-2xl rounded-2xl">
+        <DialogContent className="sm:max-w-md p-4 sm:p-6 border-slate-200 shadow-2xl rounded-2xl">
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-700 shrink-0">
               <PauseCircle className="h-5 w-5" />
@@ -1150,12 +1316,13 @@ export default function RentalsPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-2">
+          <div className="mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setSuspendModalOpen(false)}
               disabled={actionLoading}
+              className="min-h-[44px] sm:min-h-0"
             >
               Vazgeç
             </Button>
@@ -1163,7 +1330,7 @@ export default function RentalsPage() {
               size="sm"
               onClick={handleConfirmSuspend}
               disabled={actionLoading}
-              className="bg-amber-600 text-white hover:bg-amber-700"
+              className="bg-amber-600 text-white hover:bg-amber-700 min-h-[44px] sm:min-h-0"
             >
               {actionLoading ? 'İşleniyor…' : 'Evet, Askıya Al'}
             </Button>
@@ -1179,7 +1346,7 @@ export default function RentalsPage() {
         open={unsuspendModalOpen}
         onOpenChange={(open) => !open && !actionLoading && setUnsuspendModalOpen(false)}
       >
-        <DialogContent className="sm:max-w-md p-6 border-slate-200 shadow-2xl rounded-2xl">
+        <DialogContent className="sm:max-w-md p-4 sm:p-6 border-slate-200 shadow-2xl rounded-2xl">
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
               <PlayCircle className="h-5 w-5" />
@@ -1199,12 +1366,13 @@ export default function RentalsPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-2">
+          <div className="mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setUnsuspendModalOpen(false)}
               disabled={actionLoading}
+              className="min-h-[44px] sm:min-h-0"
             >
               Vazgeç
             </Button>
@@ -1212,7 +1380,7 @@ export default function RentalsPage() {
               size="sm"
               onClick={handleConfirmUnsuspend}
               disabled={actionLoading}
-              className="bg-emerald-600 text-white hover:bg-emerald-700"
+              className="bg-emerald-600 text-white hover:bg-emerald-700 min-h-[44px] sm:min-h-0"
             >
               {actionLoading ? 'İşleniyor…' : 'Evet, Askıdan Çıkar'}
             </Button>

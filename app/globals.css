@@ -124,8 +124,32 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-tap-highlight-color: transparent;
   }
   html {
     @apply font-sans;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Mobile & Touch helpers */
+@layer utilities {
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .safe-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .safe-pt {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .min-touch-target {
+    min-height: 44px;
+    min-width: 44px;
   }
 }

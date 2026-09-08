@@ -160,23 +160,23 @@ export function DeskDetailsPanel({
       <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
         <SheetContent
           side="right"
-          className="w-full sm:max-w-md p-0 overflow-y-auto border-l border-slate-200 shadow-2xl"
+          className="w-full max-w-[100vw] sm:max-w-md p-0 overflow-y-auto touch-scroll border-l border-slate-200 shadow-2xl"
         >
           {desk && (
             <>
               {/* Başlık Alanı */}
-              <div className="bg-gradient-to-br from-slate-800 to-slate-900 px-6 py-6">
+              <div className="bg-gradient-to-br from-slate-800 to-slate-900 px-4 sm:px-6 py-5 sm:py-6">
                 <SheetHeader>
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-2 sm:mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 border border-white/20">
-                        <BookOpen className="h-6 w-6 text-white" />
+                      <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-white/10 border border-white/20 shrink-0">
+                        <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
                       <div>
-                        <SheetTitle className="text-white text-xl font-bold">
+                        <SheetTitle className="text-white text-lg sm:text-xl font-bold">
                           Masa {desk.code}
                         </SheetTitle>
-                        <SheetDescription className="text-slate-400 text-sm mt-0.5">
+                        <SheetDescription className="text-slate-400 text-xs sm:text-sm mt-0.5">
                           {desk.section} Bölgesi
                         </SheetDescription>
                       </div>
@@ -184,7 +184,7 @@ export function DeskDetailsPanel({
                     {statusConfig && (
                       <span
                         className={cn(
-                          'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold border',
+                          'inline-flex items-center rounded-full px-2.5 sm:px-3 py-1 text-xs font-semibold border shrink-0',
                           statusConfig.className,
                         )}
                       >
@@ -196,12 +196,12 @@ export function DeskDetailsPanel({
               </div>
 
               {/* İçerik */}
-              <div className="px-6 py-4 space-y-3">
+              <div className="px-4 sm:px-6 py-4 space-y-3">
                 {rental ? (
                   <>
                     {/* Askıda Masayı Aktifleştirme Banner / Butonu */}
                     {desk.status === 'suspended' && (
-                      <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+                      <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                         <div className="flex items-center gap-2">
                           <PauseCircle className="h-4 w-4 text-amber-600 shrink-0" />
                           <div>
@@ -213,7 +213,7 @@ export function DeskDetailsPanel({
                           type="button"
                           disabled={actionLoading}
                           onClick={handleUnsuspendDesk}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                          className="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 min-h-[40px]"
                         >
                           <PlayCircle className="h-3.5 w-3.5" />
                           <span>{actionLoading ? 'İşleniyor…' : 'Askıdan Çıkar'}</span>

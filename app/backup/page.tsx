@@ -138,23 +138,23 @@ export default function BackupPage() {
     <div className="min-h-screen bg-slate-50">
       <Navbar onRefresh={() => loadData(true)} />
 
-      <main className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      <main className="mx-auto max-w-screen-2xl px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-8">
         {/* ============================================================ */}
         {/* 1. ÜST HEADER & DURUM BİLGİSİ                                 */}
         {/* ============================================================ */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white shadow-md">
-              <Database className="h-6 w-6 text-emerald-400" />
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-slate-900 text-white shadow-md shrink-0">
+              <Database className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-400" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-slate-900">
                   Otomatik Yedekleme Sistemi
                 </h1>
               </div>
               <p className="text-xs text-slate-500 sm:text-sm mt-0.5">
-                Veri kaybını önlemek için tüm kritik tabloları (öğrenciler, kiralamalar, uzatmalar, masalar, ayarlar, profiller) tek tıkla yedekleyin.
+                Kritik tabloları (öğrenciler, kiralamalar, uzatmalar, masalar, ayarlar, profiller) tek tıkla yedekleyin.
               </p>
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function BackupPage() {
           <div className="flex flex-wrap items-center gap-2.5">
             <button
               onClick={() => loadData(true)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 sm:py-2 text-xs font-semibold text-slate-700 shadow-2xs transition hover:bg-slate-50 hover:text-slate-900 active:scale-95 min-h-[42px] sm:min-h-0"
             >
               <RefreshCw className="h-3.5 w-3.5 text-slate-500" />
               <span>Yenile</span>
@@ -183,101 +183,101 @@ export default function BackupPage() {
             {/* ============================================================ */}
             {/* 2. VERİTABANI ÖZETİ – 6 TABLO METRİK KARTLARI                */}
             {/* ============================================================ */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-xs">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-4">
                 <div>
-                  <h2 className="text-base font-bold text-slate-900">Veritabanı Tablo Özeti</h2>
-                  <p className="text-xs text-slate-500">
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">Veritabanı Tablo Özeti</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
                     Tam yedekleme sırasında arşivlenecek aktif kayıt sayıları
                   </p>
                 </div>
-                <div className="flex items-center gap-2 rounded-xl bg-slate-900 px-3.5 py-1.5 text-xs font-bold text-white">
+                <div className="flex items-center gap-2 rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white self-start sm:self-auto">
                   <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
                   <span>Toplam {backupPayload?.counts.total || 0} Aktif Kayıt</span>
                 </div>
               </div>
 
-              <div className="mt-5 grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6">
+              <div className="mt-4 sm:mt-5 grid grid-cols-2 gap-2.5 sm:gap-3.5 sm:grid-cols-3 lg:grid-cols-6">
                 {/* Öğrenciler */}
-                <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-3.5">
+                <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-3 sm:p-3.5">
                   <div className="flex items-center justify-between text-blue-700">
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Öğrenciler</span>
-                    <Users className="h-3.5 w-3.5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider truncate">Öğrenciler</span>
+                    <Users className="h-3.5 w-3.5 shrink-0" />
                   </div>
-                  <div className="mt-2 text-xl font-extrabold text-slate-900">
+                  <div className="mt-1 sm:mt-2 text-lg sm:text-xl font-extrabold text-slate-900">
                     {backupPayload?.counts.students || 0}
                   </div>
-                  <div className="mt-1 text-[10px] text-blue-600 font-medium">students tablosu</div>
+                  <div className="mt-0.5 sm:mt-1 text-[10px] text-blue-600 font-medium truncate">students tablosu</div>
                 </div>
 
                 {/* Kiralamalar */}
-                <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-3.5">
+                <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-3 sm:p-3.5">
                   <div className="flex items-center justify-between text-emerald-700">
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Kiralamalar</span>
-                    <Calendar className="h-3.5 w-3.5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider truncate">Kiralamalar</span>
+                    <Calendar className="h-3.5 w-3.5 shrink-0" />
                   </div>
-                  <div className="mt-2 text-xl font-extrabold text-slate-900">
+                  <div className="mt-1 sm:mt-2 text-lg sm:text-xl font-extrabold text-slate-900">
                     {backupPayload?.counts.rentals || 0}
                   </div>
-                  <div className="mt-1 text-[10px] text-emerald-600 font-medium">rentals tablosu</div>
+                  <div className="mt-0.5 sm:mt-1 text-[10px] text-emerald-600 font-medium truncate">rentals tablosu</div>
                 </div>
 
                 {/* Süre Uzatmaları */}
-                <div className="rounded-xl border border-purple-100 bg-purple-50/50 p-3.5">
+                <div className="rounded-xl border border-purple-100 bg-purple-50/50 p-3 sm:p-3.5">
                   <div className="flex items-center justify-between text-purple-700">
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Uzatmalar</span>
-                    <Clock className="h-3.5 w-3.5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider truncate">Uzatmalar</span>
+                    <Clock className="h-3.5 w-3.5 shrink-0" />
                   </div>
-                  <div className="mt-2 text-xl font-extrabold text-slate-900">
+                  <div className="mt-1 sm:mt-2 text-lg sm:text-xl font-extrabold text-slate-900">
                     {backupPayload?.counts.rental_extensions || 0}
                   </div>
-                  <div className="mt-1 text-[10px] text-purple-600 font-medium">rental_extensions</div>
+                  <div className="mt-0.5 sm:mt-1 text-[10px] text-purple-600 font-medium truncate">rental_extensions</div>
                 </div>
 
                 {/* Masalar */}
-                <div className="rounded-xl border border-teal-100 bg-teal-50/50 p-3.5">
+                <div className="rounded-xl border border-teal-100 bg-teal-50/50 p-3 sm:p-3.5">
                   <div className="flex items-center justify-between text-teal-700">
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Masalar</span>
-                    <Layers className="h-3.5 w-3.5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider truncate">Masalar</span>
+                    <Layers className="h-3.5 w-3.5 shrink-0" />
                   </div>
-                  <div className="mt-2 text-xl font-extrabold text-slate-900">
+                  <div className="mt-1 sm:mt-2 text-lg sm:text-xl font-extrabold text-slate-900">
                     {backupPayload?.counts.desks || 0}
                   </div>
-                  <div className="mt-1 text-[10px] text-teal-600 font-medium">desks (A, B, C)</div>
+                  <div className="mt-0.5 sm:mt-1 text-[10px] text-teal-600 font-medium truncate">desks (A, B, C)</div>
                 </div>
 
                 {/* Ayarlar */}
-                <div className="rounded-xl border border-indigo-100 bg-indigo-50/50 p-3.5">
+                <div className="rounded-xl border border-indigo-100 bg-indigo-50/50 p-3 sm:p-3.5">
                   <div className="flex items-center justify-between text-indigo-700">
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Ayarlar</span>
-                    <Settings className="h-3.5 w-3.5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider truncate">Ayarlar</span>
+                    <Settings className="h-3.5 w-3.5 shrink-0" />
                   </div>
-                  <div className="mt-2 text-xl font-extrabold text-slate-900">
+                  <div className="mt-1 sm:mt-2 text-lg sm:text-xl font-extrabold text-slate-900">
                     {backupPayload?.counts.settings || 0}
                   </div>
-                  <div className="mt-1 text-[10px] text-indigo-600 font-medium">settings (Fiyat/Wi-Fi)</div>
+                  <div className="mt-0.5 sm:mt-1 text-[10px] text-indigo-600 font-medium truncate">settings (Fiyat/Wi-Fi)</div>
                 </div>
 
                 {/* Profiller */}
-                <div className="rounded-xl border border-amber-100 bg-amber-50/50 p-3.5">
+                <div className="rounded-xl border border-amber-100 bg-amber-50/50 p-3 sm:p-3.5">
                   <div className="flex items-center justify-between text-amber-700">
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Kullanıcılar</span>
-                    <ShieldCheck className="h-3.5 w-3.5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider truncate">Kullanıcılar</span>
+                    <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
                   </div>
-                  <div className="mt-2 text-xl font-extrabold text-slate-900">
+                  <div className="mt-1 sm:mt-2 text-lg sm:text-xl font-extrabold text-slate-900">
                     {backupPayload?.counts.profiles || 0}
                   </div>
-                  <div className="mt-1 text-[10px] text-amber-600 font-medium">profiles (Admin/Staff)</div>
+                  <div className="mt-0.5 sm:mt-1 text-[10px] text-amber-600 font-medium truncate">profiles (Admin/Staff)</div>
                 </div>
               </div>
             </div>
 
             {/* ============================================================ */}
-            {/* 3. YEDEKLEME FORMATLARI & OTOMATİK YEDEK PLANI               */}
+            {/* 3. YEDEKLEME FORMATLARI                                      */}
             {/* ============================================================ */}
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
               {/* JSON Formatı */}
-              <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+              <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-xs transition hover:shadow-md">
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
@@ -289,7 +289,7 @@ export default function BackupPage() {
                   </div>
                   <h3 className="mt-4 text-base font-bold text-slate-900">JSON Formatı</h3>
                   <p className="mt-1.5 text-xs text-slate-500 leading-relaxed">
-                    Tüm tabloların ham verilerini ve ilişkilerini eksiksiz içeren yapılandırılmış yedek dosyası. Sistem geri yükleme (restore) için en güvenilir formattır.
+                    Tüm tabloların ham verilerini ve ilişkilerini eksiksiz içeren yapılandırılmış yedek dosyası.
                   </p>
                 </div>
 
@@ -297,7 +297,7 @@ export default function BackupPage() {
                   <button
                     onClick={() => handleExport('json')}
                     disabled={isExporting !== null}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50"
+                    className="flex min-h-[44px] sm:h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-xs transition hover:bg-slate-800 active:scale-95 disabled:opacity-50"
                   >
                     {isExporting === 'json' ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white" />
@@ -310,7 +310,7 @@ export default function BackupPage() {
               </div>
 
               {/* Excel Formatı */}
-              <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+              <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-xs transition hover:shadow-md">
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
@@ -322,7 +322,7 @@ export default function BackupPage() {
                   </div>
                   <h3 className="mt-4 text-base font-bold text-slate-900">Excel Formatı (.xls)</h3>
                   <p className="mt-1.5 text-xs text-slate-500 leading-relaxed">
-                    Microsoft Excel ile doğrudan açılabilen; Öğrenciler, Kiralamalar, Uzatmalar ve Masaları ayrı sekmelerde düzenleyen zengin elektronik tablo.
+                    Öğrenciler, Kiralamalar, Uzatmalar ve Masaları ayrı sekmelerde düzenleyen zengin elektronik tablo.
                   </p>
                 </div>
 
@@ -330,7 +330,7 @@ export default function BackupPage() {
                   <button
                     onClick={() => handleExport('excel')}
                     disabled={isExporting !== null}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50"
+                    className="flex min-h-[44px] sm:h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-xs transition hover:bg-slate-800 active:scale-95 disabled:opacity-50"
                   >
                     {isExporting === 'excel' ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white" />
@@ -343,7 +343,7 @@ export default function BackupPage() {
               </div>
 
               {/* CSV Formatı */}
-              <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+              <div className="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-xs transition hover:shadow-md">
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
@@ -355,7 +355,7 @@ export default function BackupPage() {
                   </div>
                   <h3 className="mt-4 text-base font-bold text-slate-900">CSV Formatı</h3>
                   <p className="mt-1.5 text-xs text-slate-500 leading-relaxed">
-                    Türkçe karakterler için UTF-8 BOM ve noktalı virgül (;) ayırıcı içeren standart metin dökümü. Tüm veritabanı yönetim yazılımlarına aktarılabilir.
+                    Türkçe karakterler için UTF-8 BOM ve noktalı virgül (;) ayırıcı içeren standart metin dökümü.
                   </p>
                 </div>
 
@@ -363,7 +363,7 @@ export default function BackupPage() {
                   <button
                     onClick={() => handleExport('csv')}
                     disabled={isExporting !== null}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50"
+                    className="flex min-h-[44px] sm:h-10 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white shadow-xs transition hover:bg-slate-800 active:scale-95 disabled:opacity-50"
                   >
                     {isExporting === 'csv' ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white" />
@@ -377,14 +377,14 @@ export default function BackupPage() {
             </div>
 
             {/* ============================================================ */}
-            {/* 5. YEDEK GEÇMİŞİ TABLOSU (backup_logs)                       */}
+            {/* 5. YEDEK GEÇMİŞİ (backup_logs)                               */}
             {/* ============================================================ */}
-            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-              <div className="border-b border-slate-100 p-6 flex items-center justify-between">
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
+              <div className="border-b border-slate-100 p-4 sm:p-6 flex items-center justify-between">
                 <div>
-                  <h2 className="text-base font-bold text-slate-900">Yedekleme Geçmişi</h2>
-                  <p className="text-xs text-slate-500">
-                    Sistemde oluşturulan tüm tam ve otomatik yedeklerin kayıt kütüğü
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">Yedekleme Geçmişi</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Oluşturulan tüm yedeklerin kayıt kütüğü
                   </p>
                 </div>
                 <span className="text-xs font-semibold text-slate-500">
@@ -392,7 +392,68 @@ export default function BackupPage() {
                 </span>
               </div>
 
-              <div className="overflow-x-auto">
+              {/* MOBİL GÖRÜNÜM: KART LİSTESİ (< md) */}
+              <div className="block md:hidden divide-y divide-slate-100 p-2 sm:p-4">
+                {logs.length === 0 ? (
+                  <div className="py-12 text-center text-xs text-slate-400">
+                    Henüz kayıtlı bir yedekleme geçmişi bulunmamaktadır.
+                  </div>
+                ) : (
+                  logs.map((log) => (
+                    <div key={log.id} className="p-3.5 space-y-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          {log.file_type === 'json' ? (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                              JSON
+                            </span>
+                          ) : log.file_type === 'excel' ? (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-bold text-blue-800">
+                              EXCEL
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2.5 py-0.5 text-[10px] font-bold text-purple-800">
+                              CSV
+                            </span>
+                          )}
+                          <span className="font-bold text-xs text-slate-900">{log.file_size}</span>
+                        </div>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200">
+                          <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                          Başarılı
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-slate-500">
+                        <span>
+                          {new Date(log.created_at).toLocaleString('tr-TR', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </span>
+                        <span>{log.record_count} kayıt</span>
+                      </div>
+
+                      <div className="pt-1 flex items-center justify-between border-t border-slate-50">
+                        <span className="text-[10px] text-slate-400">Yedekleyen: {log.created_by}</span>
+                        <button
+                          onClick={() => handleExport(log.file_type)}
+                          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 active:scale-95"
+                        >
+                          <Download className="h-3 w-3 text-slate-500" />
+                          <span>İndir</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* MASAÜSTÜ GÖRÜNÜM: TABLO (>= md) */}
+              <div className="hidden md:block overflow-x-auto touch-scroll">
                 <table className="w-full text-left text-xs">
                   <thead className="border-b border-slate-100 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     <tr>
@@ -409,7 +470,7 @@ export default function BackupPage() {
                     {logs.length === 0 ? (
                       <tr>
                         <td colSpan={7} className="px-6 py-12 text-center text-slate-400">
-                          Henüz kayıtlı bir yedekleme geçmişi bulunmamaktadır. Yukarıdaki butonlarla ilk yedeğinizi alabilirsiniz.
+                          Henüz kayıtlı bir yedekleme geçmişi bulunmamaktadır.
                         </td>
                       </tr>
                     ) : (

@@ -146,60 +146,63 @@ export default function QrManagementPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {/* Format Seçici: Etiketli QR vs Sadece QR */}
-            <div className="flex items-center p-1 bg-slate-200/70 rounded-xl text-xs font-bold">
+            <div className="flex items-center p-1 bg-slate-200/70 rounded-xl text-xs font-bold w-full sm:w-auto justify-center">
               <button
                 type="button"
                 onClick={() => setDownloadMode('labeled')}
                 className={cn(
-                  'px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5',
+                  'flex-1 sm:flex-initial min-h-[38px] px-3 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5',
                   downloadMode === 'labeled'
                     ? 'bg-white text-emerald-700 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900',
                 )}
               >
-                <Tag className="h-3.5 w-3.5 text-emerald-600" />
+                <Tag className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                 <span>Etiketli QR</span>
               </button>
               <button
                 type="button"
                 onClick={() => setDownloadMode('qr-only')}
                 className={cn(
-                  'px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5',
+                  'flex-1 sm:flex-initial min-h-[38px] px-3 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5',
                   downloadMode === 'qr-only'
                     ? 'bg-white text-slate-900 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900',
                 )}
               >
-                <QrCode className="h-3.5 w-3.5 text-slate-700" />
+                <QrCode className="h-3.5 w-3.5 text-slate-700 shrink-0" />
                 <span>Sadece QR</span>
               </button>
             </div>
 
-            <button
-              onClick={() => loadQRs(true)}
-              disabled={loading}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
-              title="Yenile"
-            >
-              <RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin text-emerald-600')} />
-              <span>Yenile</span>
-            </button>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                onClick={() => loadQRs(true)}
+                disabled={loading}
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 min-h-[40px] rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+                title="Yenile"
+              >
+                <RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin text-emerald-600')} />
+                <span>Yenile</span>
+              </button>
 
-            <button
-              onClick={handlePrint}
-              disabled={loading}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
-            >
-              <Printer className="h-4 w-4 text-blue-600" />
-              <span>Yazdır (A4 Çıktı)</span>
-            </button>
+              <button
+                onClick={handlePrint}
+                disabled={loading}
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 min-h-[40px] rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+              >
+                <Printer className="h-4 w-4 text-blue-600 shrink-0" />
+                <span className="hidden xs:inline">Yazdır (A4)</span>
+                <span className="xs:hidden">Yazdır</span>
+              </button>
+            </div>
 
             <button
               onClick={handleDownloadAllZip}
               disabled={loading || isZipping}
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-4 py-2 text-xs font-bold text-white shadow-md transition hover:bg-emerald-800 disabled:opacity-50"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 min-h-[40px] rounded-xl bg-emerald-700 px-4 py-2 text-xs font-bold text-white shadow-md transition hover:bg-emerald-800 disabled:opacity-50"
             >
               {isZipping ? (
                 <>
@@ -208,7 +211,7 @@ export default function QrManagementPage() {
                 </>
               ) : (
                 <>
-                  <Archive className="h-4 w-4 text-emerald-200" />
+                  <Archive className="h-4 w-4 text-emerald-200 shrink-0" />
                   <span>Tümünü İndir (ZIP)</span>
                 </>
               )}
@@ -219,7 +222,7 @@ export default function QrManagementPage() {
         {/* ============================================================ */}
         {/* 2. WI-FI VE SİSTEM BİLGİLENDİRME KUTUSU (Yazdırmada Gizli)   */}
         {/* ============================================================ */}
-        <div className="print:hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="print:hidden rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-3.5">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
@@ -249,40 +252,42 @@ export default function QrManagementPage() {
         {/* 3. FİLTRE VE ARAMA ÇUBUĞU (Yazdırmada Gizli)                 */}
         {/* ============================================================ */}
         <div className="print:hidden flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {/* Bölge Butonları */}
-          <div className="flex items-center gap-1.5 p-1 bg-slate-200/70 rounded-xl w-fit">
-            {(
-              [
-                { key: 'all', label: 'Tümü (50)' },
-                { key: 'A', label: 'A Bölgesi (12)' },
-                { key: 'B', label: 'B Bölgesi (22)' },
-                { key: 'C', label: 'C Bölgesi (16)' },
-              ] as const
-            ).map(({ key, label }) => (
-              <button
-                key={key}
-                onClick={() => setSelectedSection(key)}
-                className={cn(
-                  'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all',
-                  selectedSection === key
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900',
-                )}
-              >
-                {label}
-              </button>
-            ))}
+          {/* Bölge Butonları (Mobilde yatay kaydırılabilir) */}
+          <div className="overflow-x-auto pb-1 max-w-full -mx-1 px-1">
+            <div className="flex items-center gap-1.5 p-1 bg-slate-200/70 rounded-xl w-max">
+              {(
+                [
+                  { key: 'all', label: 'Tümü (50)' },
+                  { key: 'A', label: 'A Bölgesi (12)' },
+                  { key: 'B', label: 'B Bölgesi (22)' },
+                  { key: 'C', label: 'C Bölgesi (16)' },
+                ] as const
+              ).map(({ key, label }) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedSection(key)}
+                  className={cn(
+                    'min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap',
+                    selectedSection === key
+                      ? 'bg-white text-slate-900 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900',
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Arama Input */}
           <div className="relative w-full sm:w-64">
-            <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Masa kodu ara (A1, B14, C7...)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             />
           </div>
         </div>
@@ -302,11 +307,11 @@ export default function QrManagementPage() {
             {/* ============================================================ */}
             {/* 4. EKRAN GÖRÜNÜMÜ: 50 MASA QR KARTLARI (Yazdırmada Gizli)     */}
             {/* ============================================================ */}
-            <div className="print:hidden grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            <div className="print:hidden grid grid-cols-1 min-[420px]:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
               {filteredItems.map((item) => (
                 <div
                   key={item.deskCode}
-                  className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-md"
+                  className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-md"
                 >
                   {/* Kart Başlığı */}
                   <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -334,22 +339,22 @@ export default function QrManagementPage() {
                       <img
                         src={item.dataUrl}
                         alt={`Masa ${item.deskCode} QR Kodu`}
-                        className="h-32 w-32 object-contain"
+                        className="h-28 w-28 sm:h-32 sm:w-32 object-contain"
                       />
                     </div>
                   </div>
 
                   {/* Wi-Fi İpucu & İndirme Butonu */}
                   <div className="space-y-2 pt-2 border-t border-slate-100">
-                    <div className="text-center text-[10px] text-slate-500 leading-tight">
+                    <div className="text-center text-[10px] text-slate-500 leading-tight truncate">
                       Wi-Fi: <span className="font-semibold text-slate-700">{item.wifiName}</span>
                     </div>
 
                     <button
                       onClick={() => handleDownloadSingle(item)}
-                      className="flex h-8 w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800"
+                      className="flex min-h-[38px] w-full items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800"
                     >
-                      <Download className="h-3.5 w-3.5 text-slate-500" />
+                      <Download className="h-3.5 w-3.5 text-slate-500 shrink-0" />
                       <span>{downloadMode === 'labeled' ? 'Etiket İndir' : 'QR İndir'}</span>
                     </button>
                   </div>

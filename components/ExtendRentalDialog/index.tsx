@@ -200,9 +200,9 @@ export function ExtendRentalDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && !loading && onClose()}>
       <DialogContent className="sm:max-w-md p-0 overflow-hidden border-slate-200 shadow-2xl rounded-2xl">
         {/* Header */}
-        <div className="bg-slate-900 p-5 text-white flex items-center justify-between">
+        <div className="bg-slate-900 p-4 sm:p-5 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold shrink-0">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
@@ -217,14 +217,14 @@ export function ExtendRentalDialog({
         </div>
 
         {/* Form İçeriği */}
-        <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-4 max-h-[75vh] overflow-y-auto touch-scroll">
           {/* Tarih Karşılaştırma Kutusu */}
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center justify-between text-xs">
             <div>
               <p className="text-[10px] font-semibold text-slate-400 uppercase">Mevcut Bitiş</p>
               <p className="font-bold text-slate-700 mt-0.5">{currentFormatted}</p>
             </div>
-            <ArrowRight className="h-4 w-4 text-slate-400" />
+            <ArrowRight className="h-4 w-4 text-slate-400 shrink-0 mx-2" />
             <div className="text-right">
               <p className="text-[10px] font-semibold text-blue-600 uppercase">Yeni Bitiş</p>
               <p className="font-bold text-blue-700 mt-0.5">{previewDate}</p>
@@ -245,7 +245,7 @@ export function ExtendRentalDialog({
                     type="button"
                     onClick={() => handleTypeChange(opt.type)}
                     className={cn(
-                      'p-2.5 rounded-xl border-2 text-center transition-all cursor-pointer flex flex-col items-center justify-center',
+                      'p-2 sm:p-2.5 rounded-xl border-2 text-center transition-all cursor-pointer flex flex-col items-center justify-center min-h-[58px]',
                       isSelected
                         ? 'border-slate-900 bg-slate-900 text-white shadow-sm'
                         : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50',
@@ -281,7 +281,7 @@ export function ExtendRentalDialog({
               <span className="text-[10px] text-slate-400 font-normal">Zorunlu alan</span>
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">
                 ₺
               </span>
               <input
@@ -291,7 +291,7 @@ export function ExtendRentalDialog({
                 placeholder="Örn: 1500"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full pl-8 pr-3 py-2 text-xs font-bold text-slate-900 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                className="w-full pl-8 pr-3 py-2.5 text-sm font-bold text-slate-900 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 min-h-[44px]"
               />
             </div>
           </div>
@@ -316,7 +316,7 @@ export function ExtendRentalDialog({
                     type="button"
                     onClick={() => setPaymentStatus(opt.id)}
                     className={cn(
-                      'py-2 px-2 rounded-xl border-2 text-xs font-bold transition-all cursor-pointer text-center',
+                      'py-2 px-2 rounded-xl border-2 text-xs font-bold transition-all cursor-pointer text-center min-h-[44px]',
                       isSelected
                         ? opt.color + ' ring-2 ring-slate-900/10 shadow-xs'
                         : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50',
@@ -339,7 +339,7 @@ export function ExtendRentalDialog({
               placeholder="Örn: Havale ile ödendi / Kalan 500 TL haftaya"
               value={paymentNote}
               onChange={(e) => setPaymentNote(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 placeholder:text-slate-400"
+              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 placeholder:text-slate-400 min-h-[44px]"
             />
           </div>
 
@@ -358,12 +358,13 @@ export function ExtendRentalDialog({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+        <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={onClose}
             disabled={loading}
+            className="min-h-[44px] sm:min-h-0 text-slate-600"
           >
             Vazgeç
           </Button>
@@ -371,7 +372,7 @@ export function ExtendRentalDialog({
             size="sm"
             onClick={handleConfirm}
             disabled={loading}
-            className="bg-slate-900 text-white hover:bg-slate-800 flex items-center gap-1.5 font-bold"
+            className="bg-slate-900 text-white hover:bg-slate-800 flex items-center justify-center gap-1.5 font-bold min-h-[44px] sm:min-h-0"
           >
             {loading ? (
               <>
