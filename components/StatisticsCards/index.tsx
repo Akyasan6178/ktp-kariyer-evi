@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Hourglass,
   AlertOctagon,
+  Ban,
 } from 'lucide-react';
 
 interface StatisticsCardsProps {
@@ -92,21 +93,32 @@ export function StatisticsCards({ stats }: StatisticsCardsProps) {
       bgClass: 'bg-yellow-50/80',
       borderClass: 'border-yellow-200',
       badgeClass: 'bg-yellow-100 text-yellow-800',
-      description: 'Durdurulmuş / onay bekleyen',
+      description: 'Durdurulmuş / dondurulmuş',
+    },
+    {
+      label: 'Kapalı Koltuk',
+      value: stats.closed || 0,
+      icon: Ban,
+      colorClass: 'text-slate-700',
+      bgClass: 'bg-slate-100/90',
+      borderClass: 'border-slate-300',
+      badgeClass: 'bg-slate-200 text-slate-700',
+      description: 'Geçici kullanım dışı',
     },
   ];
 
+  const activeDesks = Math.max(0, stats.total - (stats.closed || 0));
   const occupancyRate =
-    stats.total > 0
+    activeDesks > 0
       ? Math.round(
-          ((stats.occupied + stats.expiring + stats.suspended) / stats.total) * 100,
+          ((stats.occupied + stats.expiring + stats.suspended) / activeDesks) * 100,
         )
       : 0;
 
   return (
     <div className="space-y-3 sm:space-y-4">
-      {/* 6'lı İstatistik Grid'i */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3.5">
+      {/* 7'li İstatistik Grid'i */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2.5 sm:gap-3.5">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
@@ -146,7 +158,14 @@ export function StatisticsCards({ stats }: StatisticsCardsProps) {
             style={{ width: `${occupancyRate}%` }}
           />
         </div>
-        <span className="text-xs font-bold text-slate-800 shrink-0">%{occupancyRate}</span>
+        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 shrink-0">
+          <span>%{occupancyRate}</span>
+          {stats.closed > 0 && (
+            <span className="text-[11px] font-medium text-slate-500">
+              (Aktif Kapasite: {activeDesks}/{stats.total})
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

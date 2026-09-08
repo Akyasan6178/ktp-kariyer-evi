@@ -23,6 +23,8 @@ export function calculateRemainingDays(endDateStr: string | null | undefined): n
  * - expiring: mavi (Aktif kiralamanın bitmesine 7 gün veya daha az kaldıysa)
  */
 export function getDeskDisplayStatus(desk: DeskWithRental): DeskStatus {
+  // Kapalı koltuklar öncelikli olarak gri gösterilir
+  if (desk.status === 'closed') return 'closed';
   // Askıdaki masalar öncelikli olarak sarı gösterilir
   if (desk.status === 'suspended') return 'suspended';
   if (desk.status === 'available') return 'available';

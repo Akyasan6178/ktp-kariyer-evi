@@ -51,6 +51,12 @@ const STATUS_STYLES: Record<
     text: 'text-white',
     shadow: 'hover:shadow-sky-500/40',
   },
+  closed: {
+    bg: 'bg-slate-400 hover:bg-slate-500',
+    border: 'border-slate-600',
+    text: 'text-white',
+    shadow: 'hover:shadow-slate-500/40',
+  },
 };
 
 export function DeskCard({ desk, onClick, className }: DeskCardProps) {

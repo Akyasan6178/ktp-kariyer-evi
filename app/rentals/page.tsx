@@ -127,6 +127,10 @@ export default function RentalsPage() {
   };
 
   const openExtend = (rental: RentalDetailed) => {
+    if (rental.desk?.status === 'closed') {
+      toast.error('Kapalı masada süre uzatılamaz.');
+      return;
+    }
     setSelectedRental(rental);
     setExtendModalOpen(true);
   };
@@ -137,6 +141,10 @@ export default function RentalsPage() {
   };
 
   const openSuspend = (rental: RentalDetailed) => {
+    if (rental.desk?.status === 'closed') {
+      toast.error('Kapalı masa askıya alınamaz.');
+      return;
+    }
     setSelectedRental(rental);
     setSuspendModalOpen(true);
   };
@@ -467,6 +475,11 @@ export default function RentalsPage() {
                           Askıda
                         </span>
                       )}
+                      {rental.desk?.status === 'closed' && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800 border border-slate-300">
+                          Kapalı
+                        </span>
+                      )}
                     </div>
                     <span
                       className={cn(
@@ -652,6 +665,11 @@ export default function RentalsPage() {
                             {rental.desk?.status === 'suspended' && (
                               <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
                                 Askıda
+                              </span>
+                            )}
+                            {rental.desk?.status === 'closed' && (
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800 border border-slate-300">
+                                Kapalı
                               </span>
                             )}
                           </div>

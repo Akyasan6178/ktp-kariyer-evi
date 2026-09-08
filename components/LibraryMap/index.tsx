@@ -115,6 +115,10 @@ function StatusLegend() {
         <div className="w-3.5 h-3.5 rounded-[2px] bg-sky-500 border border-sky-700 shadow-sm" />
         <span className="font-semibold text-slate-700">Dolmak Üzere (&le;7 Gün)</span>
       </div>
+      <div className="flex items-center gap-1.5">
+        <div className="w-3.5 h-3.5 rounded-[2px] bg-slate-400 border border-slate-600 shadow-sm" />
+        <span className="font-semibold text-slate-700">Kapalı (Kullanım Dışı)</span>
+      </div>
     </div>
   );
 }

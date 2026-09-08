@@ -23,7 +23,8 @@ import { getRentalStatusDetails } from '@/lib/utils/rentalStatus';
 import { getTotalRentalRevenue } from '@/lib/services/extensions';
 import { formatDateLong, formatDate, formatPhone, cleanPhoneForTel } from '@/lib/utils/format';
 import { STATUS_BADGE, PAYMENT_BADGE, PACKAGE_LABEL } from '@/lib/utils/badges';
-import { unsuspendDesk } from '@/lib/services/desks';
+import { unsuspendDesk, closeDesk, openDesk } from '@/lib/services/desks';
+import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import type {
   DeskWithRental,
@@ -49,6 +50,8 @@ import {
   Sparkles,
   TrendingUp,
   History,
+  Ban,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface DeskDetailsPanelProps {
@@ -102,6 +105,7 @@ export function DeskDetailsPanel({
   onClose,
   onRentalCreated,
 }: DeskDetailsPanelProps) {
+  const { isAdmin } = useAuth();
   const [isRentalDialogOpen, setIsRentalDialogOpen] = useState(false);
   const [isExtendDialogOpen, setIsExtendDialogOpen] = useState(false);
   const [revenueSummary, setRevenueSummary] = useState<RentalRevenueSummary | null>(null);
@@ -119,6 +123,45 @@ export function DeskDetailsPanel({
       await unsuspendDesk(desk.id);
       toast.success('Masa tekrar aktif edildi', {
         description: `Masa ${desk.code} durumu 'Dolu' olarak güncellendi.`,
+      });
+      if (onRentalCreated) {
+        await onRentalCreated();
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'İşlem başarısız';
+      toast.error('Hata oluştu', { description: msg });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleCloseDesk = async () => {
+    if (!desk) return;
+    setActionLoading(true);
+    try {
+      await closeDesk(desk.id);
+      toast.success('Masa kullanıma kapatıldı', {
+        description: `Masa ${desk.code} 'Kapalı' durumuna alındı. Artık kiralama yapılamaz.`,
+      });
+      if (onRentalCreated) {
+        await onRentalCreated();
+      }
+      onClose();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'İşlem başarısız';
+      toast.error('Hata oluştu', { description: msg });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleOpenDesk = async () => {
+    if (!desk) return;
+    setActionLoading(true);
+    try {
+      await openDesk(desk.id);
+      toast.success('Masa kullanıma açıldı', {
+        description: `Masa ${desk.code} 'Boş' durumuna alındı ve kiralanabilir.`,
       });
       if (onRentalCreated) {
         await onRentalCreated();
@@ -471,9 +514,39 @@ export function DeskDetailsPanel({
                       </>
                     )}
                   </>
+                ) : desk.status === 'closed' ? (
+                  /* Kapalı Koltuk Durumu */
+                  <div className="flex flex-col items-center justify-center py-10 text-center px-2">
+                    <div className="w-16 h-16 rounded-2xl bg-slate-200 border border-slate-300 flex items-center justify-center mb-3">
+                      <Ban className="h-8 w-8 text-slate-700" />
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-200 text-slate-700 text-xs font-bold mb-2 border border-slate-300">
+                      <span>Geçici Kullanım Dışı</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 mb-1">Masa Kapalı</h3>
+                    <p className="text-xs text-slate-500 max-w-xs mb-6 leading-relaxed">
+                      Bu koltuk yönetici tarafından kullanıma kapatılmıştır. Kapalı koltuğa kiralama yapılamaz, süre uzatılamaz ve öğrenci atanamaz.
+                    </p>
+
+                    {isAdmin ? (
+                      <button
+                        type="button"
+                        disabled={actionLoading}
+                        onClick={handleOpenDesk}
+                        className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-base shadow-md shadow-emerald-600/20 transition-all duration-200 hover:scale-[1.02] cursor-pointer disabled:opacity-50"
+                      >
+                        <CheckCircle2 className="h-5 w-5" />
+                        <span>{actionLoading ? 'İşleniyor…' : 'Kullanıma Aç (Boşa Al)'}</span>
+                      </button>
+                    ) : (
+                      <div className="w-full p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600">
+                        Bu koltuğu sadece sistem yöneticisi (Admin) tekrar kullanıma açabilir.
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   /* Boş Masa Durumu */
-                  <div className="flex flex-col items-center justify-center py-12 text-center px-2">
+                  <div className="flex flex-col items-center justify-center py-10 text-center px-2">
                     <div className="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center mb-4">
                       <BookOpen className="h-8 w-8 text-emerald-600" />
                     </div>
@@ -482,15 +555,30 @@ export function DeskDetailsPanel({
                       Bu masa şu an müsait durumda. Yeni bir öğrenci kaydedip hemen kiralama oluşturabilirsiniz.
                     </p>
 
-                    {/* Yeşil Renkli Büyük Buton */}
-                    <button
-                      type="button"
-                      onClick={() => setIsRentalDialogOpen(true)}
-                      className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-base shadow-lg shadow-emerald-600/25 transition-all duration-200 hover:scale-[1.02] cursor-pointer"
-                    >
-                      <PlusCircle className="h-5 w-5" />
-                      <span>Kiralama Oluştur</span>
-                    </button>
+                    <div className="w-full space-y-2.5">
+                      {/* Yeşil Renkli Büyük Buton */}
+                      <button
+                        type="button"
+                        onClick={() => setIsRentalDialogOpen(true)}
+                        className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-base shadow-lg shadow-emerald-600/25 transition-all duration-200 hover:scale-[1.02] cursor-pointer"
+                      >
+                        <PlusCircle className="h-5 w-5" />
+                        <span>Kiralama Oluştur</span>
+                      </button>
+
+                      {/* Admin için Kapalıya Al Butonu */}
+                      {isAdmin && (
+                        <button
+                          type="button"
+                          disabled={actionLoading}
+                          onClick={handleCloseDesk}
+                          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 active:bg-slate-200 text-slate-700 font-bold text-xs shadow-2xs transition-all cursor-pointer disabled:opacity-50"
+                        >
+                          <Ban className="h-4 w-4 text-slate-500" />
+                          <span>{actionLoading ? 'İşleniyor…' : 'Kullanıma Kapat (Kapalıya Al)'}</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
 

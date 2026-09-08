@@ -130,6 +130,7 @@ function StatusBadge({ status }: { status: DeskStatus }) {
     occupied: { label: 'Dolu', className: 'bg-red-500 text-white' },
     suspended: { label: 'Askıda', className: 'bg-amber-500 text-white' },
     expiring: { label: 'Dolmak Üzere', className: 'bg-blue-500 text-white' },
+    closed: { label: 'Kapalı', className: 'bg-slate-500 text-white' },
   };
   const c = CONFIG[status];
   return (

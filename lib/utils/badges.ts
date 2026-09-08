@@ -23,6 +23,10 @@ export const STATUS_BADGE: Record<DeskStatus, { label: string; className: string
     label: 'Dolmak Üzere',
     className: 'bg-blue-100 text-blue-700 border-blue-200',
   },
+  closed: {
+    label: 'Kapalı',
+    className: 'bg-slate-200 text-slate-700 border-slate-300',
+  },
 };
 
 // ── Ödeme Durumu Rozetleri ───────────────────────────────────

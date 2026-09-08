@@ -12,7 +12,7 @@ export type DbRental = Database['public']['Tables']['rentals']['Row'];
 
 // ── Enum tipleri ─────────────────────────────────────────────
 export type DeskStatus = DbDesk['status'];
-// 'available' | 'occupied' | 'suspended' | 'expiring'
+// 'available' | 'occupied' | 'suspended' | 'expiring' | 'closed'
 
 export type PaymentStatus = DbRental['payment_status'];
 // 'pending' | 'deposit' | 'paid'
@@ -67,6 +67,7 @@ export interface LibraryStats {
   available: number;
   occupied: number;
   suspended: number;
+  closed: number;
   expiring: number;
   depositCount: number;
   expiredCount: number;

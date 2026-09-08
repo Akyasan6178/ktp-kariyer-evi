@@ -5,7 +5,7 @@
 // ============================================================
 
 import { supabase } from '@/lib/supabase';
-import { updateDeskStatus } from '@/lib/services/desks';
+import { updateDeskStatus, getDeskById } from '@/lib/services/desks';
 import { updateStudent } from '@/lib/services/students';
 import type { DbRental, RentalDetailed, RentalInsert, RentalUpdate, StudentUpdate } from '@/lib/types';
 
@@ -31,10 +31,9 @@ export async function getRentals(): Promise<DbRental[]> {
 }
 
 /**
- * Tüm aktif kiralamaları masa ve öğrenci bilgileriyle birlikte getirir.
- * /rentals sayfası bu fonksiyonu kullanır.
+ * Aktif kiralamaları masa ve öğrenci detaylarıyla birlikte getirir.
  */
-export async function getActiveRentalsDetailed(): Promise<RentalDetailed[]> {
+export async function getActiveRentals(): Promise<RentalDetailed[]> {
   const { data, error } = await db
     .from('rentals')
     .select(`
@@ -49,14 +48,14 @@ export async function getActiveRentalsDetailed(): Promise<RentalDetailed[]> {
       payment_note,
       is_active,
       created_at,
-      desk:desks(id, code, section, status, created_at),
-      student:students(id, full_name, phone, group_type, parent_name, parent_phone, notes, created_at)
+      desk:desks(id, code, section, status),
+      student:students(id, full_name, phone, group_type, parent_name, parent_phone, notes)
     `)
     .eq('is_active', true)
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('[rentals.service] getActiveRentalsDetailed hata:', error.message);
+    console.error('[rentals.service] getActiveRentals hata:', error.message);
     throw new Error(`Aktif kiralamalar yüklenemedi: ${error.message}`);
   }
 
@@ -78,12 +77,21 @@ export async function getActiveRentalsDetailed(): Promise<RentalDetailed[]> {
   })) as RentalDetailed[];
 }
 
+export const getActiveRentalsDetailed = getActiveRentals;
+
 /**
  * Yeni kiralama kaydı oluşturur ve masayı 'occupied' yapar.
+ * Kapalı masaya kiralama yapılması engellenir.
  */
 export async function createRental(
   payload: Omit<RentalInsert, 'id' | 'created_at' | 'is_active'>,
 ): Promise<DbRental> {
+  // Masanın kapalı olup olmadığını kontrol et
+  const desk = await getDeskById(payload.desk_id);
+  if (desk?.status === 'closed') {
+    throw new Error('Bu koltuk kullanıma kapatılmıştır. Kapalı koltuğa kiralama yapılamaz.');
+  }
+
   const { data, error } = await db
     .from('rentals')
     .insert({ ...payload, is_active: true })

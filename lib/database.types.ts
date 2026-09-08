@@ -20,21 +20,21 @@ export interface Database {
           id: string;
           code: string;
           section: string;
-          status: 'available' | 'occupied' | 'suspended' | 'expiring';
+          status: 'available' | 'occupied' | 'suspended' | 'expiring' | 'closed';
           created_at: string;
         };
         Insert: {
           id?: string;
           code: string;
           section: string;
-          status?: 'available' | 'occupied' | 'suspended' | 'expiring';
+          status?: 'available' | 'occupied' | 'suspended' | 'expiring' | 'closed';
           created_at?: string;
         };
         Update: {
           id?: string;
           code?: string;
           section?: string;
-          status?: 'available' | 'occupied' | 'suspended' | 'expiring';
+          status?: 'available' | 'occupied' | 'suspended' | 'expiring' | 'closed';
           created_at?: string;
         };
       };

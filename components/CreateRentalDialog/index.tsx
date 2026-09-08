@@ -31,6 +31,7 @@ import {
   Loader2,
   CheckCircle2,
   Sparkles,
+  AlertCircle,
 } from 'lucide-react';
 
 interface CreateRentalDialogProps {
@@ -166,6 +167,11 @@ export function CreateRentalDialog({
     e.preventDefault();
     if (!desk) return;
 
+    if (desk.status === 'closed') {
+      toast.error('Kapalı koltuğa kiralama yapılamaz.');
+      return;
+    }
+
     if (!validate()) {
       toast.error('Lütfen zorunlu alanları eksiksiz doldurunuz.');
       return;
@@ -192,7 +198,7 @@ export function CreateRentalDialog({
         package_type: form.packageType,
         start_date: form.startDate,
         end_date: form.endDate,
-        price: Number(form.price),
+        price: Number(form.price) || 0,
         payment_status: form.paymentStatus,
         payment_note: form.paymentNote.trim() || null,
       });
@@ -236,11 +242,19 @@ export function CreateRentalDialog({
                 </div>
               </div>
               <span className="shrink-0 rounded-full bg-emerald-500/20 px-2.5 py-1 text-[11px] sm:text-xs font-semibold text-emerald-300 border border-emerald-500/30">
-                Boş
+                {desk?.status === 'closed' ? 'Kapalı' : 'Boş'}
               </span>
             </div>
           </DialogHeader>
         </div>
+
+        {/* Kapalı Masa Uyarısı */}
+        {desk?.status === 'closed' && (
+          <div className="mx-4 sm:mx-6 mt-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center gap-2">
+            <AlertCircle className="h-4 w-4 text-rose-600 shrink-0" />
+            <span>Bu masa kullanıma kapatılmıştır. Kapalı masaya kiralama yapılamaz.</span>
+          </div>
+        )}
 
         {/* Form Alanı */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5 bg-white">
@@ -532,7 +546,7 @@ export function CreateRentalDialog({
             </Button>
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || desk?.status === 'closed'}
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 min-h-[44px] rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold shadow-md shadow-emerald-600/20 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (

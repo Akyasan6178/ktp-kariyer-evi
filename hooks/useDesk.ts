@@ -39,6 +39,7 @@ function computeStats(desks: DeskWithRental[]): LibraryStats {
     available: desks.filter((d) => d.status === 'available').length,
     occupied: desks.filter((d) => d.status === 'occupied').length,
     suspended: desks.filter((d) => d.status === 'suspended').length,
+    closed: desks.filter((d) => d.status === 'closed').length,
     expiring: expiringCount,
     depositCount,
     expiredCount,

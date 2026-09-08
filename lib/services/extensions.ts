@@ -6,7 +6,7 @@
 // ============================================================
 
 import { supabase } from '@/lib/supabase';
-import { updateDeskStatus } from '@/lib/services/desks';
+import { updateDeskStatus, getDeskById } from '@/lib/services/desks';
 import type {
   DbRentalExtension,
   RentalRevenueSummary,
@@ -26,7 +26,7 @@ export interface CreateExtensionPayload {
 }
 
 /**
- * Süre Uzatma Fonksiyonu:
+ * Süre uzatma işlemi:
  * 1) Mevcut rental.end_date alınır.
  * 2) Seçilen süre kadar ileri alınır.
  * 3) rental_extensions tablosuna kayıt eklenir (ayrı finansal kayıt).
@@ -46,6 +46,14 @@ export async function createExtension(
   if (fetchErr || !rental) {
     console.error('[extensions.service] createExtension kiralama bulunamadı:', fetchErr?.message);
     throw new Error(`Kiralama bulunamadı: ${fetchErr?.message || 'Kayıt yok'}`);
+  }
+
+  // Masanın kapalı olup olmadığını kontrol et
+  if (rental.desk_id) {
+    const desk = await getDeskById(rental.desk_id);
+    if (desk?.status === 'closed') {
+      throw new Error('Bu masa kullanıma kapatılmıştır. Kapalı masada süre uzatılamaz.');
+    }
   }
 
   // 2. Yeni bitiş tarihini hesapla
