@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import {
   LogIn,
@@ -12,9 +11,6 @@ import {
   ShieldCheck,
   ChevronRight,
   Mail,
-  HelpCircle,
-  ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 
 interface GuideSection {
