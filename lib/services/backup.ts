@@ -191,7 +191,7 @@ export function generateExcelBackup(payload: FullBackupPayload) {
         rowsHtml += `<tr>${keys
           .map((k) => {
             const val = row[k] === null || row[k] === undefined ? '' : String(row[k]);
-            return `<td style="padding:5px;border:1px solid #e2e8f0;">${val}</td>`;
+            return `<td style="padding:5px;border:1px solid #e2e8f0;mso-number-format:'\\@';">${val}</td>`;
           })
           .join('')}</tr>`;
       }

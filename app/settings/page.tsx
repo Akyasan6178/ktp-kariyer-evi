@@ -297,15 +297,6 @@ export default function SettingsPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Bilgi Kartı */}
-              <div className="mt-5 rounded-xl border border-indigo-100 bg-indigo-50/60 p-4 text-xs text-indigo-900 flex items-start gap-3">
-                <Info className="h-4 w-4 text-indigo-600 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold">Gelecek Sürüm Desteği: </span>
-                  Bu Wi-Fi bilgileri, kütüphanedeki masalara yerleştirilecek QR kodlara otomatik entegre edilecektir. Masaya oturan öğrenciler QR kodu okutarak şifre girmeden internete bağlanabileceklerdir.
-                </div>
-              </div>
             </div>
 
             {/* 3. OTOMATİK FİYATLANDIRMA PAKETLERİ */}
@@ -364,17 +355,17 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Aylık Ücret */}
-                <div className="rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50/40 to-white p-5 shadow-sm ring-1 ring-emerald-200 transition hover:shadow-md">
+                <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 transition hover:border-emerald-300 hover:shadow-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
-                      Aylık Paket (Popüler)
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                      Aylık Paket
                     </span>
                     <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
                       30 Gün
                     </span>
                   </div>
                   <div className="mt-3">
-                    <label className="block text-[11px] font-medium text-emerald-900 mb-1.5">
+                    <label className="block text-[11px] font-medium text-slate-500 mb-1.5">
                       Aylık Ücret (₺) <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
@@ -385,9 +376,9 @@ export default function SettingsPage() {
                         required
                         value={form.monthly_price}
                         onChange={(e) => handleChange('monthly_price', Number(e.target.value))}
-                        className="h-11 w-full rounded-xl border border-emerald-300 bg-white px-3.5 pr-8 text-base font-extrabold text-emerald-800 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 pr-8 text-base font-extrabold text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                       />
-                      <span className="absolute right-3.5 top-1/2 -translate-y-1/2 font-bold text-emerald-600">
+                      <span className="absolute right-3.5 top-1/2 -translate-y-1/2 font-bold text-slate-400">
                         ₺
                       </span>
                     </div>

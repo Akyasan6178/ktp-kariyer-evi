@@ -148,45 +148,142 @@ export default function ReportsPage() {
         pending: 'Bekliyor',
       };
 
-      const rows = data.recentTransactions.map((tx) => [
-        `"${formatDateTime(tx.date)}"`,
-        `"${tx.studentName}"`,
-        `"${tx.studentGroup}"`,
-        `"${tx.deskCode}"`,
-        `"${tx.section}"`,
-        `"${tx.type}"`,
-        tx.amount,
-        `"${statusTrMap[tx.paymentStatus] || tx.paymentStatus}"`,
-        `"${(tx.note || '').replace(/"/g, '""')}"`,
-      ]);
+      const formatExportDateTime = (dateStr: string): string => {
+        if (!dateStr) return '';
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return dateStr;
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        const hours = String(d.getHours()).padStart(2, '0');
+        const minutes = String(d.getMinutes()).padStart(2, '0');
+        return `${day}.${month}.${year} ${hours}:${minutes}`;
+      };
 
-      // Excel için UTF-8 BOM ve noktalı virgül (Turkish locale Excel separator)
-      const csvContent =
-        '\uFEFF' +
-        [headers.join(';'), ...rows.map((e) => e.join(';'))].join('\r\n');
+      if (isExcelFormat) {
+        // ── 1. EXCEL FORMATI (.xls - HTML / XML tablosu) ─────────────
+        // Sütun genişlikleri, mso-number-format ve Türkçe karakter desteği ile ##### hatası engellenir
+        let tableRows = '';
+        for (const tx of data.recentTransactions) {
+          const formattedDate = formatExportDateTime(tx.date);
+          const statusText = statusTrMap[tx.paymentStatus] || tx.paymentStatus;
+          const noteText = (tx.note || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const studentName = (tx.studentName || '—').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          tableRows += `<tr>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;mso-number-format:'\\@';text-align:center;">${formattedDate}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;font-weight:bold;">${studentName}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;text-align:center;">${tx.studentGroup || '—'}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;text-align:center;font-weight:bold;">${tx.deskCode || '—'}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;text-align:center;">${tx.section || '—'}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;text-align:center;">${tx.type || '—'}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;text-align:right;font-weight:bold;mso-number-format:'#,##0\\ &quot;TL&quot;';">${tx.amount || 0}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;text-align:center;">${statusText}</td>
+            <td style="padding:6px 10px;border:1px solid #cbd5e1;">${noteText}</td>
+          </tr>`;
+        }
 
-      const blob = new Blob([csvContent], {
-        type: isExcelFormat
-          ? 'application/vnd.ms-excel;charset=utf-8;'
-          : 'text/csv;charset=utf-8;',
-      });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      const filename = `Yasin_Hoca_Finans_Raporu_${new Date().toISOString().split('T')[0]}.${
-        isExcelFormat ? 'csv' : 'csv'
-      }`;
-      link.setAttribute('href', url);
-      link.setAttribute('download', filename);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+        const excelHtml = `
+          <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+              <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+              <!--[if gte mso 9]>
+              <xml>
+                <x:ExcelWorkbook>
+                  <x:ExcelWorksheets>
+                    <x:ExcelWorksheet>
+                      <x:Name>Finans Raporu</x:Name>
+                      <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                    </x:ExcelWorksheet>
+                  </x:ExcelWorksheets>
+                </x:ExcelWorkbook>
+              </xml>
+              <![endif]-->
+              <style>
+                body { font-family: Arial, sans-serif; font-size: 10pt; }
+                th { background-color: #0f172a; color: #ffffff; font-weight: bold; padding: 8px 10px; border: 1px solid #475569; }
+              </style>
+            </head>
+            <body>
+              <div style="margin-bottom:15px;">
+                <h2 style="margin:0;color:#0f172a;">Kütüphane Finans ve Kasa Raporu</h2>
+                <p style="margin:4px 0 0 0;color:#64748b;font-size:10pt;">Oluşturulma Tarihi: ${new Date().toLocaleString('tr-TR')} &bull; Toplam İşlem: ${data.recentTransactions.length}</p>
+              </div>
+              <table border="1" style="border-collapse:collapse;width:100%;">
+                <colgroup>
+                  <col style="width:130pt;" />
+                  <col style="width:140pt;" />
+                  <col style="width:60pt;" />
+                  <col style="width:60pt;" />
+                  <col style="width:60pt;" />
+                  <col style="width:100pt;" />
+                  <col style="width:80pt;" />
+                  <col style="width:80pt;" />
+                  <col style="width:160pt;" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th style="width:130pt;">Tarih</th>
+                    <th style="width:140pt;">Öğrenci</th>
+                    <th style="width:60pt;">Grup</th>
+                    <th style="width:60pt;">Masa</th>
+                    <th style="width:60pt;">Bölge</th>
+                    <th style="width:100pt;">İşlem Tipi</th>
+                    <th style="width:80pt;">Tutar (TL)</th>
+                    <th style="width:80pt;">Ödeme Durumu</th>
+                    <th style="width:160pt;">Açıklama / Not</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${tableRows}
+                </tbody>
+              </table>
+            </body>
+          </html>
+        `;
 
-      toast.success(
-        isExcelFormat
-          ? 'Excel uyumlu rapor başarıyla indirildi'
-          : 'CSV dosyası başarıyla indirildi'
-      );
+        const blob = new Blob([excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const filename = `Finans_Raporu_${new Date().toISOString().split('T')[0]}.xls`;
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        toast.success('Excel raporu başarıyla indirildi');
+      } else {
+        // ── 2. CSV FORMATI (.csv - UTF-8 BOM ve Noktalı Virgül) ─────────────
+        const rows = data.recentTransactions.map((tx) => [
+          `"${formatExportDateTime(tx.date)}"`,
+          `"${(tx.studentName || '').replace(/"/g, '""')}"`,
+          `"${tx.studentGroup || ''}"`,
+          `"${tx.deskCode || ''}"`,
+          `"${tx.section || ''}"`,
+          `"${tx.type || ''}"`,
+          tx.amount || 0,
+          `"${statusTrMap[tx.paymentStatus] || tx.paymentStatus}"`,
+          `"${(tx.note || '').replace(/"/g, '""')}"`,
+        ]);
+
+        const csvContent =
+          '\uFEFF' +
+          [headers.join(';'), ...rows.map((e) => e.join(';'))].join('\r\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const filename = `Finans_Raporu_${new Date().toISOString().split('T')[0]}.csv`;
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        toast.success('CSV dosyası başarıyla indirildi');
+      }
     } catch (err) {
       console.error('Export error:', err);
       toast.error('Dosya indirilirken bir hata oluştu');
